@@ -1,0 +1,19 @@
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/stringio-3.2.0/ext/stringio
+/Users/nasirajamil/.rvm/rubies/ruby-3.3.5/bin/ruby extconf.rb
+checking for rb_io_mode_t in ruby/io.h... no
+creating Makefile
+
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/stringio-3.2.0/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20260123-80872-2449m8 sitelibdir\=./.gem.20260123-80872-2449m8 clean
+
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/stringio-3.2.0/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20260123-80872-2449m8 sitelibdir\=./.gem.20260123-80872-2449m8
+compiling stringio.c
+linking shared-object stringio.bundle
+
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/stringio-3.2.0/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20260123-80872-2449m8 sitelibdir\=./.gem.20260123-80872-2449m8 install
+/usr/local/opt/coreutils/bin/ginstall -c -m 0755 stringio.bundle ./.gem.20260123-80872-2449m8
+
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/stringio-3.2.0/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20260123-80872-2449m8 sitelibdir\=./.gem.20260123-80872-2449m8 clean

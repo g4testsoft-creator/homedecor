@@ -1,0 +1,18 @@
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/websocket-driver-0.8.0/ext/websocket-driver
+/Users/nasirajamil/.rvm/rubies/ruby-3.3.5/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/websocket-driver-0.8.0/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20260123-80872-566lg9 sitelibdir\=./.gem.20260123-80872-566lg9 clean
+
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/websocket-driver-0.8.0/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20260123-80872-566lg9 sitelibdir\=./.gem.20260123-80872-566lg9
+compiling websocket_mask.c
+linking shared-object websocket_mask.bundle
+
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/websocket-driver-0.8.0/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20260123-80872-566lg9 sitelibdir\=./.gem.20260123-80872-566lg9 install
+/usr/local/opt/coreutils/bin/ginstall -c -m 0755 websocket_mask.bundle ./.gem.20260123-80872-566lg9
+
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/websocket-driver-0.8.0/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20260123-80872-566lg9 sitelibdir\=./.gem.20260123-80872-566lg9 clean

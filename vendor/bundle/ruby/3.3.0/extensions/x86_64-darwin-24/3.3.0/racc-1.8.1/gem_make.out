@@ -1,0 +1,18 @@
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+/Users/nasirajamil/.rvm/rubies/ruby-3.3.5/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20260123-80872-aizzez sitelibdir\=./.gem.20260123-80872-aizzez clean
+
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20260123-80872-aizzez sitelibdir\=./.gem.20260123-80872-aizzez
+compiling cparse.c
+linking shared-object racc/cparse.bundle
+
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20260123-80872-aizzez sitelibdir\=./.gem.20260123-80872-aizzez install
+/usr/local/opt/coreutils/bin/ginstall -c -m 0755 cparse.bundle ./.gem.20260123-80872-aizzez/racc
+
+current directory: /Users/nasirajamil/Desktop/Projects/homedecor/vendor/bundle/ruby/3.3.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20260123-80872-aizzez sitelibdir\=./.gem.20260123-80872-aizzez clean
