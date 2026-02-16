@@ -1,0 +1,8 @@
+google_pet_brands:
+  input: google_pet_brands.html
+  output: t.json
+  fields:
+    - title
+    - link
+    - snippet
+    - thumbnail
