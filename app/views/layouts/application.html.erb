@@ -301,7 +301,12 @@
         <%= link_to "Home Decor", root_path, class: "nav-logo" %>
         <div class="nav-links">
           <% if user_signed_in? %>
-            <span class="nav-user">Welcome, <%= current_user.email %></span>
+            <span class="nav-user">
+              Welcome, <%= current_user.full_name.presence || current_user.email %>
+            </span>
+            <% if current_user.admin? %>
+              <%= link_to "Admin", admin_decor_items_path, class: "nav-link" %>
+            <% end %>
             <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" %>
           <% else %>
             <%= link_to "Sign in", new_user_session_path, class: "nav-link" %>
