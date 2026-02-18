@@ -1,0 +1,29 @@
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="width=device-width, initial-scale=1" name="viewport; charset=utf-8">
+<meta content="NONE,NOARCHIVE" name="robots">
+<meta content="false" name="turbo-prefetch">
+<%= csrf_meta_tag %>
+
+<!-- Bootstrap 4 CSS for Rails Admin compatibility -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- AdminLTE CSS (Rails Admin styling) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/css/adminlte.min.css">
+<!-- Flatpickr CSS for date picker -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Custom Rails Admin Styles -->
+<%= render "layouts/rails_admin/custom_styles" %>
+
+<!-- Rails Admin JavaScript -->
+<% case RailsAdmin::config.asset_source
+   when :importmap %>
+  <%= javascript_inline_importmap_tag(RailsAdmin::Engine.importmap.to_json(resolver: self)) %>
+  <%= javascript_importmap_module_preload_tags(RailsAdmin::Engine.importmap) %>
+  <%= javascript_importmap_shim_nonce_configuration_tag if respond_to? :javascript_importmap_shim_nonce_configuration_tag %>
+  <%= javascript_importmap_shim_tag if respond_to? :javascript_importmap_shim_tag %>
+  <%= tag.script "import jQuery from 'jquery'; window.jQuery = jQuery;".html_safe, type: "module" %>
+  <%= javascript_import_module_tag 'rails_admin' %>
+<% end %>

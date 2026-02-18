@@ -38,6 +38,11 @@ gem "jbuilder"
 
 # Authentication with Devise
 gem "devise"
+gem 'rails_admin', github: 'railsadminteam/rails_admin'
+gem "cssbundling-rails"
+gem "importmap-rails"
+gem "sprockets-rails"
+gem 'sassc', '~> 2.4'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]

@@ -7,4 +7,8 @@ class User < ApplicationRecord
   def full_name
     [first_name, last_name].map { |v| v.to_s.strip }.reject(&:empty?).join(" ")
   end
+
+  def admin?
+    admin == true
+  end
 end
