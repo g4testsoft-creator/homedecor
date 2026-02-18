@@ -1,28 +1,30 @@
-<h1>Home</h1>
+<h1 class="heading">Home</h1>
 
 <div class="decor-items-grid">
   <% @decor_items.each do |item| %>
-    <div class="decor-card">
-      <% if item.image_url.present? %>
-        <div class="card-image">
-          <img src="<%= item.image_url %>" alt="<%= item.name %>" class="card-img">
-        </div>
-      <% end %>
-      
-      <div class="card-content">
-        <h3 class="card-title"><%= item.name %></h3>
-        
-        <% if item.description.present? %>
-          <p class="card-description"><%= truncate(item.description, length: 100) %></p>
-        <% end %>
-        
-        <% if item.price.present? %>
-          <div class="card-price">
-            <strong><%= number_to_currency(item.price) %></strong>
+    <%= link_to decor_item_path(item), class: "decor-card-link" do %>
+      <div class="decor-card">
+        <% if item.image_url.present? %>
+          <div class="card-image">
+            <img src="<%= item.image_url %>" alt="<%= item.name %>" class="card-img">
           </div>
         <% end %>
+        
+        <div class="card-content">
+          <h3 class="card-title"><%= item.name %></h3>
+          
+          <% if item.description.present? %>
+            <p class="card-description"><%= truncate(item.description, length: 100) %></p>
+          <% end %>
+          
+          <% if item.price.present? %>
+            <div class="card-price">
+              <strong><%= number_to_currency(item.price) %></strong>
+            </div>
+          <% end %>
+        </div>
       </div>
-    </div>
+    <% end %>
   <% end %>
 </div>
 
@@ -31,7 +33,16 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 24px;
-    padding: 20px 0;
+    padding: 20px;
+  }
+
+  .heading{
+    padding: 0 24px
+  }
+
+  .decor-card-link {
+    text-decoration: none;
+    color: inherit;
   }
 
   .decor-card {
