@@ -1,0 +1,12 @@
+<%# app/views/decor_items/_rating.html.erb %>
+<span class="rating-stars">
+  <% if decor_item.review_count > 0 %>
+    <% decor_item.average_rating.to_i.times do %>
+      <span class="star">★</span>
+    <% end %>
+    <span class="rating-value"><%= decor_item.average_rating %> / 5.0</span>
+    <span class="review-count">(<%= decor_item.review_count %> <%= "review".pluralize(decor_item.review_count) %>)</span>
+  <% else %>
+    <span class="no-reviews">No reviews yet</span>
+  <% end %>
+</span>

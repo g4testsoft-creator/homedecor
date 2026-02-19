@@ -1,0 +1,108 @@
+<%# app/views/reviews/_form.html.erb %>
+<div class="review-form" id="review-form-element">
+  <h3>Write a Review</h3>
+  
+  <% if user_signed_in? %>
+    <%= form_with(model: [decor_item, Review.new], data: { turbo: true }) do |form| %>
+      <% if local_assigns[:review] && review.errors.any? %>
+        <div class="error-messages">
+          <h4>Errors:</h4>
+          <ul>
+            <% review.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <div class="rating-label">Rating</div>
+        <div class="rating-input" id="rating-input">
+          <% (1..5).each do |i| %>
+            <label class="rating-option">
+              <%= form.radio_button :rating, i, class: "rating-radio", id: "review_rating_#{i}" %>
+              <span class="star" data-rating="<%= i %>">★</span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :content, "Your Review" %>
+        <%= form.text_area :content, rows: 4, class: "form-control", placeholder: "Share your thoughts about this product..." %>
+      </div>
+
+      <div class="form-group">
+        <%= form.submit "Submit Review", class: "btn btn-primary", id: "submit-review-btn", disabled: true %>
+      </div>
+    <% end %>
+  <% else %>
+    <p><%= link_to "Sign in", new_user_session_path %> to write a review.</p>
+  <% end %>
+</div>
+
+<!-- Keep your existing JavaScript for the star rating functionality -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const ratingInput = document.getElementById('rating-input');
+    const submitBtn = document.getElementById('submit-review-btn');
+    const reviewForm = document.getElementById('review-form-element');
+    
+    if (!ratingInput || !submitBtn || !reviewForm) return;
+
+    const stars = ratingInput.querySelectorAll('.star');
+    const radios = ratingInput.querySelectorAll('.rating-radio');
+
+    function updateSubmitButton() {
+      const isRatingSelected = ratingInput.querySelector('input[type="radio"]:checked');
+      submitBtn.disabled = !isRatingSelected;
+    }
+
+    radios.forEach((radio) => {
+      radio.addEventListener('change', function() {
+        const rating = parseInt(this.value);
+        updateStarDisplay(rating);
+        updateSubmitButton();
+      });
+    });
+
+    stars.forEach((star) => {
+      star.addEventListener('mouseenter', function() {
+        const rating = parseInt(this.dataset.rating);
+        highlightStars(rating);
+      });
+    });
+
+    ratingInput.addEventListener('mouseleave', function() {
+      const selectedRating = ratingInput.querySelector('input[type="radio"]:checked');
+      if (selectedRating) {
+        updateStarDisplay(parseInt(selectedRating.value));
+      } else {
+        clearStars();
+      }
+    });    
+
+    function highlightStars(rating) {
+      stars.forEach((star) => {
+        const starRating = parseInt(star.dataset.rating);
+        if (starRating <= rating) {
+          star.classList.add('highlighted');
+        } else {
+          star.classList.remove('highlighted');
+        }
+      });
+    }
+
+    function updateStarDisplay(rating) {
+      highlightStars(rating);
+    }
+
+    function clearStars() {
+      stars.forEach((star) => {
+        star.classList.remove('highlighted');
+      });
+    }
+
+    updateSubmitButton();
+  });
+</script>

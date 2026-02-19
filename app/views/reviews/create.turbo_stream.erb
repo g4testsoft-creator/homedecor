@@ -1,0 +1,11 @@
+<%# app/views/reviews/create.turbo_stream.erb %>
+
+<%# Reset the form for the current user %>
+<%= turbo_stream.replace "review-form-element" do %>
+  <%= render "reviews/form", decor_item: @decor_item %>
+<% end %>
+
+<%# Show success message (optional) %>
+<%= turbo_stream.append "flash-messages" do %>
+  <div class="flash flash-success">Review posted successfully!</div>
+<% end %>

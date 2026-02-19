@@ -1,0 +1,22 @@
+<%# app/views/reviews/_review.html.erb %>
+<div id="review_<%= review.id %>" class="review-card">
+  <div class="review-header">
+    <div class="reviewer-info">
+      <span class="reviewer-name"><%= review.user.email %></span>
+      <span class="review-date"><%= time_ago_in_words(review.created_at) %> ago</span>
+    </div>
+    <div class="review-rating">
+      <% review.rating.times do %>
+        <span class="star">★</span>
+      <% end %>
+    </div>
+  </div>
+  
+  <% if review.content.present? %>
+    <div class="review-content">
+      <%= simple_format(review.content) %>
+    </div>
+  <% end %>
+  
+  <!-- Only show edit/delete buttons to the review author -->
+</div>

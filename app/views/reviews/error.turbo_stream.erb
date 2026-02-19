@@ -1,0 +1,39 @@
+<turbo-stream action="replace" target="review-form">
+  <template>
+    <div class="review-form" id="review-form">
+      <h3>Write a Review</h3>
+      <% if @review.errors.any? %>
+        <div class="alert alert-danger">
+          <%= @review.errors.full_messages.join(', ') %>
+        </div>
+      <% end %>
+      
+      <% if user_signed_in? %>
+        <%= form_with(model: [@decor_item, Review.new], local: true, id: "review-form-element") do |form| %>
+          <div class="form-group">
+            <%= form.label :rating, "Rating" %>
+            <div class="rating-input" id="rating-input">
+              <% (1..5).each do |i| %>
+                <label class="rating-option">
+                  <%= form.radio_button :rating, i, class: "rating-radio" %>
+                  <span class="star" data-rating="<%= i %>">★</span>
+                </label>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :content, "Your Review" %>
+            <%= form.text_area :content, rows: 4, class: "form-control", placeholder: "Share your thoughts about this product..." %>
+          </div>
+
+          <div class="form-group">
+            <%= form.submit "Submit Review", class: "btn btn-primary", id: "submit-review-btn", disabled: true %>
+          </div>
+        <% end %>
+      <% else %>
+        <p><%= link_to "Sign in", new_user_session_path %> to write a review.</p>
+      <% end %>
+    </div>
+  </template>
+</turbo-stream>
