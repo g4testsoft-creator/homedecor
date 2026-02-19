@@ -31,12 +31,11 @@ Rails.application.configure do
   config.assets.compile = true
 
   config.assets.precompile += %w(
+    application.js
     controllers/application.js
-    controllers/hello_controller.js
-    controllers/reviews_subscription_controller.js
     controllers/index.js
+    controllers/reviews_subscription_controller.js
     channels/consumer.js
-    channels/reviews_channel.js
   )
 
   config.serve_static_assets = true
@@ -52,10 +51,11 @@ Rails.application.configure do
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
+  # Use wss (WebSocket Secure) for HTTPS, ws for HTTP
   config.action_cable.url = "ws://13.126.151.6/cable"
 
   config.action_cable.allowed_request_origins = [
-    "http://13.126.151.6:3000",
+    "https://13.126.151.6",
     "http://13.126.151.6"
   ]
 
