@@ -28,15 +28,9 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = true
-
-  config.assets.precompile += %w(
-    application.js
-    controllers/application.js
-    controllers/index.js
-    controllers/reviews_subscription_controller.js
-    channels/consumer.js
-  )
+  config.assets.compile = false
+  config.assets.digest = true
+  config.assets.version = '1.0'
 
   config.serve_static_assets = true
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
