@@ -45,11 +45,11 @@ Rails.application.configure do
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
   # Use wss (WebSocket Secure) for HTTPS, ws for HTTP
-  config.action_cable.url = "ws://13.126.151.6/cable"
+  config.action_cable.url = "wss://homedecor.isrv.dev/cable"
 
   config.action_cable.allowed_request_origins = [
-    "https://13.126.151.6",
-    "http://13.126.151.6"
+    "https://homedecor.isrv.dev",
+    "http://homedecor.isrv.dev"
   ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
