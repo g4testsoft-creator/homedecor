@@ -31,6 +31,9 @@ Rails.application.configure do
   config.assets.compile = false
   config.assets.version = '1.0'
 
+  # Ensure importmap is properly precompiled
+  config.importmap.cache_sweepers = []
+
   config.serve_static_assets = true
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
