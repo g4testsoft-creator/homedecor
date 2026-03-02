@@ -1,6 +1,5 @@
 // app/javascript/controllers/reviews_subscription_controller.js
 import { Controller } from "@hotwired/stimulus"
-import { createConsumer } from "../channels/consumer"
 
 export default class extends Controller {
   static values = { decorItemId: Number }
@@ -8,7 +7,7 @@ export default class extends Controller {
 
   connect() {
     console.log('[JS] ReviewsSubscriptionController connecting')
-    this.consumer = createConsumer()    
+    this.consumer = ActionCable.createConsumer()
     this.subscription = this.consumer.subscriptions.create(
       {
         channel: "ReviewsChannel",
