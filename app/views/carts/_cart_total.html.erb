@@ -1,6 +1,15 @@
+<% 
+  subtotal = if defined?(cart_items) && cart_items.present?
+    cart_items.sum(&:total_price)
+  elsif user_signed_in? && current_user.cart.present?
+    current_user.cart.total_price
+  else
+    0
+  end
+%>
 <div class="cart-total-line">
   <strong>Subtotal:</strong>
-  <span><%= number_to_currency(@cart.total_price) %></span>
+  <span><%= number_to_currency(subtotal) %></span>
 </div>
 <div class="cart-total-line">
   <strong>Shipping:</strong>
@@ -8,9 +17,9 @@
 </div>
 <div class="cart-total-line">
   <strong>Tax:</strong>
-  <span><%= number_to_currency(@cart.total_price * 0.1) %></span>
+  <span><%= number_to_currency(subtotal * 0.1) %></span>
 </div>
 <div class="cart-total-final">
   <span>Total:</span>
-  <span><%= number_to_currency(@cart.total_price * 1.1) %></span>
+  <span><%= number_to_currency(subtotal * 1.1) %></span>
 </div>

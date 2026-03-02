@@ -338,10 +338,10 @@
       <div class="nav-container">
         <%= link_to "Home Decor", root_path, class: "nav-logo" %>
         <div class="nav-links">
+          <div id="cart_count" class="cart-count-container">
+            <%= render "carts/cart_header" %>
+          </div>
           <% if user_signed_in? %>
-            <div id="cart_count" class="cart-count-container">
-              <%= render "carts/cart_header" %>
-            </div>
             <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" %>
           <% else %>
             <%= link_to "Sign in", new_user_session_path, class: "nav-link" %>

@@ -32,21 +32,15 @@
       </div>
 
       <div class="decor-show-actions">
-        <% if user_signed_in? %>
-          <form id="add-to-cart-form" action="<%= add_item_cart_path %>" method="post" class="add-to-cart-form">
-            <input type="hidden" name="decor_item_id" value="<%= @decor_item.id %>">
-            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-            <div class="quantity-selector">
-              <label for="quantity">Quantity:</label>
-              <input type="number" id="quantity" name="quantity" value="1" min="1" max="999" class="quantity-input-field">
-            </div>
-            <button type="submit" class="btn-primary btn-add-to-cart">Add to Cart</button>
-          </form>
-        <% else %>
-          <p class="login-required">
-            <%= link_to "Sign in", new_user_session_path %> to add items to cart
-          </p>
-        <% end %>
+        <form id="add-to-cart-form" action="<%= add_item_cart_path %>" method="post" class="add-to-cart-form">
+          <input type="hidden" name="decor_item_id" value="<%= @decor_item.id %>">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <div class="quantity-selector">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1" max="999" class="quantity-input-field">
+          </div>
+          <button type="submit" class="btn-primary btn-add-to-cart">Add to Cart</button>
+        </form>
         <%= link_to "Back to Home", decor_items_path, class: "btn-secondary" %>
       </div>
     </div>
