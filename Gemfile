@@ -40,7 +40,6 @@ gem 'redis', '~> 5.0'
 
 # Authentication with Devise
 gem "devise"
-gem 'rails_admin', github: 'railsadminteam/rails_admin'
 gem "cssbundling-rails"
 gem 'sassc', '~> 2.4'
 
