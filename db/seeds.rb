@@ -1,37 +1,85 @@
+# Clear existing data (optional – remove if you don’t want reset behavior)
+Review.destroy_all
 DecorItem.destroy_all
+Category.destroy_all
 
-DecorItem.create!([
+puts "Seeding categories and decor items..."
+
+categories_data = [
   {
-    name: "Scandinavian Floor Lamp",
-    description: "Minimalist wooden floor lamp with warm linen shade, perfect for cozy living rooms.",
-    price: 129.99,
-    image_url: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=80"
+    name: "Wall Art",
+    slug: "wall-art",
+    description: "Beautiful wall paintings and frames",
+    items: [
+      {
+        name: "Abstract Canvas Painting",
+        description: "Modern abstract splash painting for living rooms",
+        price: 129.99,
+        image_url: "https://images.unsplash.com/photo-1541961017774-22349e4a1262"
+      },
+      {
+        name: "Minimalist Line Art Frame",
+        description: "Elegant black and white line art decor",
+        price: 59.99,
+        image_url: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+      }
+    ]
   },
   {
-    name: "Textured Throw Pillow",
-    description: "Neutral-toned cushion with subtle geometric pattern to add depth to your sofa or bed.",
-    price: 29.50,
-    image_url: "https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=800&q=80"
+    name: "Lighting",
+    slug: "lighting",
+    description: "Modern and classic decorative lighting",
+    items: [
+      {
+        name: "Golden Pendant Lamp",
+        description: "Luxury hanging splash-style pendant light",
+        price: 199.99,
+        image_url: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4"
+      },
+      {
+        name: "Modern Table Lamp",
+        description: "Stylish bedside splash lamp",
+        price: 89.99,
+        image_url: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c"
+      }
+    ]
   },
   {
-    name: "Ceramic Vase Set",
-    description: "Set of three matte ceramic vases in soft earthy tones, ideal for dried flowers.",
-    price: 54.00,
-    image_url: "https://images.unsplash.com/photo-1523755231516-e43fd2e8dca5?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    name: "Framed Wall Art",
-    description: "Abstract line art print in a light oak frame, suits modern and Scandinavian interiors.",
-    price: 89.00,
-    image_url: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    name: "Woven Jute Rug",
-    description: "Handwoven jute area rug that brings natural warmth and texture to any room.",
-    price: 199.00,
-    image_url: "https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=800&q=80"
+    name: "Vases & Plants",
+    slug: "vases-plants",
+    description: "Decorative vases and artificial plants",
+    items: [
+      {
+        name: "Ceramic Splash Vase",
+        description: "Handcrafted ceramic vase with splash texture",
+        price: 49.99,
+        image_url: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6"
+      },
+      {
+        name: "Artificial Indoor Plant",
+        description: "Realistic decorative indoor plant",
+        price: 39.99,
+        image_url: "https://images.unsplash.com/photo-1492724441997-5dc865305da7"
+      }
+    ]
   }
-])
+]
 
-puts "Seeded #{DecorItem.count} decor items."
+categories_data.each do |category_data|
+  items = category_data.delete(:items)
 
+  category = Category.find_or_create_by!(slug: category_data[:slug]) do |c|
+    c.name = category_data[:name]
+    c.description = category_data[:description]
+  end
+
+  items.each do |item_data|
+    category.decor_items.find_or_create_by!(name: item_data[:name]) do |item|
+      item.description = item_data[:description]
+      item.price = item_data[:price]
+      item.image_url = item_data[:image_url]
+    end
+  end
+end
+
+puts "Seeding completed successfully!"

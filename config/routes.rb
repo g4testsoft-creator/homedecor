@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     resources :reviews, only: [:create, :update, :destroy]
   end
 
+  resources :categories, only: [:show], param: :slug
+
   # Defines the root path route ("/")
-  root "decor_items#index"
+  # root "decor_items#index"
+  root 'home#index'
 end

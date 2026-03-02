@@ -1,0 +1,23 @@
+<%= link_to decor_item_path(item), class: "decor-card-link" do %>
+  <div class="decor-card">
+    <% if item.image_url.present? %>
+      <div class="card-image">
+        <img src="<%= item.image_url %>" alt="<%= item.name %>" class="card-img">
+      </div>
+    <% end %>
+    
+    <div class="card-content">
+      <h3 class="card-title"><%= item.name %></h3>
+      
+      <% if item.description.present? %>
+        <p class="card-description"><%= truncate(item.description, length: 80) %></p>
+      <% end %>
+      
+      <% if item.price.present? %>
+        <div class="card-price">
+          <strong><%= number_to_currency(item.price) %></strong>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
