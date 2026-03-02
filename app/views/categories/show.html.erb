@@ -41,14 +41,13 @@
           </div>
         </div>
       <% end %>
-
-      <% if user_signed_in? %>
-        <form class="card-add-to-cart" action="<%= add_item_cart_path %>" method="post">
-          <input type="hidden" name="decor_item_id" value="<%= item.id %>">
-          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-          <button type="submit" class="card-add-btn">Add to Cart</button>
-        </form>
-      <% end %>
+      
+      <form class="card-add-to-cart" action="<%= add_item_cart_path %>" method="post">
+        <input type="hidden" name="decor_item_id" value="<%= item.id %>">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <button type="submit" class="card-add-btn">Add to Cart</button>
+      </form>
+      
     </div>
   <% end %>
 </div>
