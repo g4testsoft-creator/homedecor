@@ -41,6 +41,7 @@ gem 'kaminari'
 
 # Authentication with Devise
 gem "devise"
+gem 'rails_admin', '~> 3.0'
 gem "cssbundling-rails"
 gem 'sassc', '~> 2.4'
 gem 'dotenv-rails'
