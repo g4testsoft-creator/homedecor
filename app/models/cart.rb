@@ -13,7 +13,11 @@ class Cart < ApplicationRecord
 
   def add_item(decor_item, quantity = 1)
     cart_item = cart_items.find_or_initialize_by(decor_item_id: decor_item.id)
-    cart_item.quantity = (cart_item.quantity || 0) + quantity
+    if cart_item.new_record?
+      cart_item.quantity = quantity
+    else
+      cart_item.quantity += quantity
+    end
     cart_item.save
     cart_item
   end
