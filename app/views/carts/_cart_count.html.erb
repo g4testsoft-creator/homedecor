@@ -1,7 +1,6 @@
 <div id="cart_count" class="cart-count-container">
   <%= link_to cart_path, class: "cart-link" do %>
     <span class="cart-icon">🛒</span>
-    <span>Cart</span>
     <% 
       cart_count = 0
       if user_signed_in? && current_user.cart.present?
