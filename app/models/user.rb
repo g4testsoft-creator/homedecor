@@ -5,6 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :reviews, dependent: :destroy
+  has_one :cart, dependent: :destroy
+
+  after_create :create_cart
 
   def full_name
     [first_name, last_name].map { |v| v.to_s.strip }.reject(&:empty?).join(" ")

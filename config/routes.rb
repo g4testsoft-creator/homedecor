@@ -8,6 +8,15 @@ Rails.application.routes.draw do
   end
 
   resources :categories, only: [:show], param: :slug
+  
+  resource :cart, only: [:show] do
+    member do
+      post :add_item
+      delete :remove_item
+      patch :update_quantity
+      post :clear
+    end
+  end
 
   # Defines the root path route ("/")
   # root "decor_items#index"

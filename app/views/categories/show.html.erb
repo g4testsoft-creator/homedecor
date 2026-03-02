@@ -6,40 +6,50 @@
 
 <div class="decor-items-grid">
   <% @decor_items.each do |item| %>
-    <%= link_to decor_item_path(item), class: "decor-card-link" do %>
-      <div class="decor-card">
-        <% if item.image_url.present? %>
-          <div class="card-image">
-            <img src="<%= item.image_url %>" alt="<%= item.name %>" class="card-img">
+    <div class="decor-card-wrapper">
+      <%= link_to decor_item_path(item), class: "decor-card-link" do %>
+        <div class="decor-card">
+          <% if item.image_url.present? %>
+            <div class="card-image">
+              <img src="<%= item.image_url %>" alt="<%= item.name %>" class="card-img">
+            </div>
+          <% end %>
+          
+          <div class="card-content">
+            <h3 class="card-title"><%= item.name %></h3>
+            
+            <% if item.description.present? %>
+              <p class="card-description"><%= truncate(item.description, length: 100) %></p>
+            <% end %>
+            
+            <% if item.price.present? %>
+              <div class="card-price">
+                <strong><%= number_to_currency(item.price) %></strong>
+              </div>
+            <% end %>
+            
+            <!-- Optional: Add rating display if you have reviews -->
+            <% if item.respond_to?(:average_rating) && item.average_rating > 0 %>
+              <div class="card-rating">
+                <span class="stars">
+                  <% item.average_rating.to_i.times do %>★<% end %>
+                  <% (5 - item.average_rating.to_i).times do %>☆<% end %>
+                </span>
+                <span class="rating-value">(<%= item.average_rating %>)</span>
+              </div>
+            <% end %>
           </div>
-        <% end %>
-        
-        <div class="card-content">
-          <h3 class="card-title"><%= item.name %></h3>
-          
-          <% if item.description.present? %>
-            <p class="card-description"><%= truncate(item.description, length: 100) %></p>
-          <% end %>
-          
-          <% if item.price.present? %>
-            <div class="card-price">
-              <strong><%= number_to_currency(item.price) %></strong>
-            </div>
-          <% end %>
-          
-          <!-- Optional: Add rating display if you have reviews -->
-          <% if item.respond_to?(:average_rating) && item.average_rating > 0 %>
-            <div class="card-rating">
-              <span class="stars">
-                <% item.average_rating.to_i.times do %>★<% end %>
-                <% (5 - item.average_rating.to_i).times do %>☆<% end %>
-              </span>
-              <span class="rating-value">(<%= item.average_rating %>)</span>
-            </div>
-          <% end %>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+
+      <% if user_signed_in? %>
+        <form class="card-add-to-cart" action="<%= add_item_cart_path %>" method="post">
+          <input type="hidden" name="decor_item_id" value="<%= item.id %>">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <button type="submit" class="card-add-btn">Add to Cart</button>
+        </form>
+      <% end %>
+    </div>
   <% end %>
 </div>
 
@@ -80,6 +90,13 @@
     max-width: 1400px;
     margin: 0 auto;
   }
+
+  /* Card Wrapper */
+  .decor-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
   
   /* Card Link */
   .decor-card-link {
@@ -87,6 +104,36 @@
     color: inherit;
     display: block;
     height: 100%;
+    flex: 1;
+  }
+
+  /* Card Add to Cart Form */
+  .card-add-to-cart {
+    padding: 12px;
+    background: white;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .card-add-btn {
+    width: 100%;
+    padding: 10px 12px;
+    background: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 0 0 12px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.05s ease;
+  }
+
+  .card-add-btn:hover {
+    background: #34495e;
+    transform: translateY(-2px);
+  }
+
+  .card-add-btn:active {
+    transform: scale(0.98);
   }
   
   /* Card Styles */

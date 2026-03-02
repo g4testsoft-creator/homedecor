@@ -43,6 +43,43 @@
         gap: 16px;
       }
 
+      .cart-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: #333;
+        font-size: 0.95rem;
+        border-radius: 6px;
+        transition: background 0.2s ease;
+      }
+
+      .cart-link:hover {
+        background: #f5f5f5;
+      }
+
+      .cart-icon {
+        font-size: 1.3rem;
+      }
+
+      .cart-count {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: #2c3e50;
+        color: white;
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
       .nav-user {
         color: #666;
         font-size: 0.9rem;
@@ -308,6 +345,9 @@
             <% if current_user.admin? %>
               <%= link_to "Admin", admin_decor_items_path, class: "nav-link" %>
             <% end %>
+            <div id="cart_count" class="cart-count-container">
+              <%= render "carts/cart_header" %>
+            </div>
             <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" %>
           <% else %>
             <%= link_to "Sign in", new_user_session_path, class: "nav-link" %>

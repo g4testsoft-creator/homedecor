@@ -1,0 +1,60 @@
+<% cart_items.each do |cart_item| %>
+  <div class="cart-item" id="cart-item-<%= cart_item.id %>">
+    <% if cart_item.decor_item.image_url.present? %>
+      <div class="cart-item-image">
+        <img src="<%= cart_item.decor_item.image_url %>" alt="<%= cart_item.decor_item.name %>">
+      </div>
+    <% else %>
+      <div class="cart-item-image" style="background: #f0f0f0;"></div>
+    <% end %>
+
+    <div class="cart-item-details">
+      <%= link_to cart_item.decor_item.name, decor_item_path(cart_item.decor_item), class: "cart-item-name" %>
+      <p class="cart-item-price"><%= number_to_currency(cart_item.decor_item.price) %> each</p>
+    </div>
+
+    <div class="cart-item-controls">
+      <input type="number" 
+             id="quantity_<%= cart_item.id %>"
+             class="quantity-input" 
+             value="<%= cart_item.quantity %>" 
+             min="1"
+             max="999">
+      <button type="button"
+              class="update-quantity-btn"
+              data-decor-item-id="<%= cart_item.decor_item_id %>"
+              onclick="updateQuantity('<%= cart_item.decor_item_id %>', this)">Update</button>
+      <%= button_to "Remove", 
+                    remove_item_cart_path(decor_item_id: cart_item.decor_item_id), 
+                    method: :delete,
+                    class: "remove-btn" %>
+    </div>
+
+    <div class="cart-item-total">
+      <%= number_to_currency(cart_item.total_price) %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  function updateQuantity(decorItemId, button) {
+    const quantityInput = document.getElementById(`quantity_${decorItemId}`);
+    const quantity = quantityInput.value;
+    
+    const formData = new FormData();
+    formData.append('quantity', quantity);
+    
+    fetch(`<%= update_quantity_cart_path %>?decor_item_id=${decorItemId}`, {
+      method: 'PATCH',
+      headers: {
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: formData
+    })
+    .then(response => response.text())
+    .then(html => {
+      // The Turbo stream response will handle the update
+    })
+    .catch(error => console.error('Error:', error));
+  }
+</script>

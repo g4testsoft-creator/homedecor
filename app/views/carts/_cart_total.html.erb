@@ -1,0 +1,16 @@
+<div class="cart-total-line">
+  <strong>Subtotal:</strong>
+  <span><%= number_to_currency(@cart.total_price) %></span>
+</div>
+<div class="cart-total-line">
+  <strong>Shipping:</strong>
+  <span>Free</span>
+</div>
+<div class="cart-total-line">
+  <strong>Tax:</strong>
+  <span><%= number_to_currency(@cart.total_price * 0.1) %></span>
+</div>
+<div class="cart-total-final">
+  <span>Total:</span>
+  <span><%= number_to_currency(@cart.total_price * 1.1) %></span>
+</div>
