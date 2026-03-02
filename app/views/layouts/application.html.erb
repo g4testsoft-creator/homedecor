@@ -339,9 +339,6 @@
         <%= link_to "Home Decor", root_path, class: "nav-logo" %>
         <div class="nav-links">
           <% if user_signed_in? %>
-            <span class="nav-user">
-              Welcome, <%= current_user.full_name.presence || current_user.email %>
-            </span>
             <div id="cart_count" class="cart-count-container">
               <%= render "carts/cart_header" %>
             </div>
