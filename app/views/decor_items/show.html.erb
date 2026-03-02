@@ -4,9 +4,13 @@
      data-reviews-subscription-decor-item-id-value="<%= @decor_item.id %>">
   
   <div class="decor-show-card">
-    <% if @decor_item.image_url.present? %>
+    <% if @decor_item.image.attached? %>
       <div class="decor-show-image">
-        <img src="<%= @decor_item.image_url %>" alt="<%= @decor_item.name %>">
+        <%= image_tag @decor_item.image, alt: @decor_item.name %>
+      </div>
+    <% else %>
+      <div class="decor-show-image">
+        <img src="https://via.placeholder.com/600x400?text=No+Image" alt="<%= @decor_item.name %>">
       </div>
     <% end %>
 

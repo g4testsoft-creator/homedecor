@@ -1,5 +1,10 @@
+# db/seeds.rb
+require "open-uri"
+
 # Clear existing data (optional – remove if you don’t want reset behavior)
 Review.destroy_all
+CartItem.destroy_all
+Cart.destroy_all
 DecorItem.destroy_all
 Category.destroy_all
 
@@ -78,6 +83,8 @@ categories_data.each do |category_data|
       item.description = item_data[:description]
       item.price = item_data[:price]
       item.image_url = item_data[:image_url]
+      file = URI.open("#{item_data[:image_url]}?w=800")
+      item.image.attach(io: file, filename: "#{item.name.parameterize}.jpg")
     end
   end
 end

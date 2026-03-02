@@ -1,8 +1,12 @@
 <%= link_to decor_item_path(item), class: "decor-card-link" do %>
   <div class="decor-card">
-    <% if item.image_url.present? %>
+    <% if item.image.attached? && item.image.present? %>
       <div class="card-image">
-        <img src="<%= item.image_url %>" alt="<%= item.name %>" class="card-img">
+        <%= image_tag item.image, alt: item.name, class: "card-img" %>
+      </div>
+    <% else %>
+      <div class="card-image">
+        <img src="https://via.placeholder.com/400x300?text=No+Image" alt="<%= item.name %>" class="card-img">
       </div>
     <% end %>
     

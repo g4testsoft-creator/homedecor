@@ -1,8 +1,10 @@
 class DecorItem < ApplicationRecord
   belongs_to :category, optional: true
   has_many :reviews, dependent: :destroy
+  has_one_attached :image
   
   validates :name, presence: true
+  validates :image, presence: true
 
   scope :newest, -> { order(created_at: :desc).limit(10) }
   scope :popular, -> { 

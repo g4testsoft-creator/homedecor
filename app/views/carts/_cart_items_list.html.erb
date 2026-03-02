@@ -1,8 +1,8 @@
 <% cart_items.each do |cart_item| %>
   <div class="cart-item" id="cart-item-<%= cart_item.id %>">
-    <% if cart_item.decor_item.image_url.present? %>
+    <% if cart_item.decor_item.image.attached? %>
       <div class="cart-item-image">
-        <img src="<%= cart_item.decor_item.image_url %>" alt="<%= cart_item.decor_item.name %>">
+        <%= image_tag cart_item.decor_item.image, alt: cart_item.decor_item.name %>
       </div>
     <% else %>
       <div class="cart-item-image" style="background: #f0f0f0;"></div>
