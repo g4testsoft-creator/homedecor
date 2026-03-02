@@ -1,5 +1,6 @@
 // app/javascript/controllers/reviews_subscription_controller.js
 import { Controller } from "@hotwired/stimulus"
+import * as ActionCable from "@rails/actioncable"
 
 export default class extends Controller {
   static values = { decorItemId: Number }
