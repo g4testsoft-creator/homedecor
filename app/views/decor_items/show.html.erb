@@ -212,6 +212,22 @@
     transform: scale(0.98);
   }
 
+  .btn-primary:disabled,
+  .btn-primary[disabled] {
+    background: #cbd5e1;
+    color: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .btn-primary:disabled:hover,
+  .btn-primary[disabled]:hover {
+    background: #cbd5e1;
+    transform: none;
+  }
+
   .btn-add-to-cart {
     padding: 10px 24px;
     font-weight: 600;
