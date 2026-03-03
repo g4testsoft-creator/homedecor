@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_03_02_100942) do
+ActiveRecord::Schema[7.0].define(version: 2026_03_03_043407) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -44,13 +44,13 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_02_100942) do
 
   create_table "cart_items", force: :cascade do |t|
     t.bigint "cart_id", null: false
-    t.bigint "decor_item_id", null: false
+    t.bigint "product_id", null: false
     t.integer "quantity", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["cart_id", "decor_item_id"], name: "index_cart_items_on_cart_id_and_decor_item_id", unique: true
+    t.index ["cart_id", "product_id"], name: "index_cart_items_on_cart_id_and_product_id", unique: true
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
-    t.index ["decor_item_id"], name: "index_cart_items_on_decor_item_id"
+    t.index ["product_id"], name: "index_cart_items_on_product_id"
   end
 
   create_table "carts", force: :cascade do |t|
@@ -69,7 +69,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_02_100942) do
     t.index ["slug"], name: "index_categories_on_slug", unique: true
   end
 
-  create_table "decor_items", force: :cascade do |t|
+  create_table "products", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
     t.decimal "price", precision: 10, scale: 2
@@ -77,18 +77,18 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_02_100942) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "category_id"
-    t.index ["category_id"], name: "index_decor_items_on_category_id"
+    t.index ["category_id"], name: "index_products_on_category_id"
   end
 
   create_table "reviews", force: :cascade do |t|
-    t.bigint "decor_item_id", null: false
+    t.bigint "product_id", null: false
     t.bigint "user_id", null: false
     t.integer "rating", null: false
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["decor_item_id", "user_id"], name: "index_reviews_on_decor_item_id_and_user_id"
-    t.index ["decor_item_id"], name: "index_reviews_on_decor_item_id"
+    t.index ["product_id", "user_id"], name: "index_reviews_on_product_id_and_user_id"
+    t.index ["product_id"], name: "index_reviews_on_product_id"
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
@@ -110,9 +110,11 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_02_100942) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cart_items", "carts"
-  add_foreign_key "cart_items", "decor_items"
+  add_foreign_key "cart_items", "products"
+  add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
-  add_foreign_key "decor_items", "categories"
-  add_foreign_key "reviews", "decor_items"
+  add_foreign_key "products", "categories"
+  add_foreign_key "reviews", "products"
+  add_foreign_key "reviews", "products"
   add_foreign_key "reviews", "users"
 end

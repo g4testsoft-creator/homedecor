@@ -1,0 +1,11 @@
+<span class="rating-stars">
+  <% if product.review_count > 0 %>
+    <% product.average_rating.to_i.times do %>
+      <span class="star">★</span>
+    <% end %>
+    <span class="rating-value"><%= product.average_rating %> / 5.0</span>
+    <span class="review-count">(<%= product.review_count %> <%= "review".pluralize(product.review_count) %>)</span>
+  <% else %>
+    <span class="no-reviews">No reviews yet</span>
+  <% end %>
+</span>

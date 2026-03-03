@@ -3,7 +3,7 @@
   <h3>Write a Review</h3>
   
   <% if user_signed_in? %>
-    <%= form_with(model: [decor_item, Review.new], data: { turbo: true }) do |form| %>
+    <%= form_with(model: [product, Review.new], data: { turbo: true }) do |form| %>
       <% if local_assigns[:review] && review.errors.any? %>
         <div class="error-messages">
           <h4>Errors:</h4>

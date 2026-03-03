@@ -1,8 +1,8 @@
 <h1 class="heading">Home</h1>
 
 <div class="decor-items-grid">
-  <% @decor_items.each do |item| %>
-    <%= link_to decor_item_path(item), class: "decor-card-link" do %>
+  <% @products.each do |item| %>
+    <%= link_to product_path(item), class: "decor-card-link" do %>
       <div class="decor-card">
         <% if item.image.attached? %>
           <div class="card-image">

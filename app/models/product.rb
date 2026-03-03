@@ -1,6 +1,6 @@
-class DecorItem < ApplicationRecord
+class Product < ApplicationRecord
   belongs_to :category, optional: true
-  has_many :reviews, dependent: :destroy
+  has_many :reviews, dependent: :destroy, foreign_key: 'product_id', primary_key: 'id'
   has_one_attached :image
   
   validates :name, presence: true

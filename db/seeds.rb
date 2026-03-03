@@ -1,14 +1,14 @@
 # db/seeds.rb
 require "open-uri"
 
-# Clear existing data (optional – remove if you don’t want reset behavior)
+# Clear existing data (optional – remove if you don't want reset behavior)
 Review.destroy_all
 CartItem.destroy_all
 Cart.destroy_all
-DecorItem.destroy_all
+Product.destroy_all
 Category.destroy_all
 
-puts "Seeding categories and decor items..."
+puts "Seeding categories and products..."
 
 categories_data = [
   {
@@ -79,7 +79,7 @@ categories_data.each do |category_data|
   end
 
   items.each do |item_data|
-    category.decor_items.find_or_create_by!(name: item_data[:name]) do |item|
+    category.products.find_or_create_by!(name: item_data[:name]) do |item|
       item.description = item_data[:description]
       item.price = item_data[:price]
       item.image_url = item_data[:image_url]

@@ -1,18 +1,18 @@
 class Cart < ApplicationRecord
   belongs_to :user
   has_many :cart_items, dependent: :destroy
-  has_many :decor_items, through: :cart_items
+  has_many :products, through: :cart_items
 
   def total_price
-    cart_items.sum { |item| item.decor_item.price * item.quantity }
+    cart_items.sum { |item| item.product.price * item.quantity }
   end
 
   def total_items
     cart_items.sum(:quantity)
   end
 
-  def add_item(decor_item, quantity = 1)
-    cart_item = cart_items.find_or_initialize_by(decor_item_id: decor_item.id)
+  def add_item(product, quantity = 1)
+    cart_item = cart_items.find_or_initialize_by(product_id: product.id)
     if cart_item.new_record?
       cart_item.quantity = quantity
     else
@@ -22,12 +22,12 @@ class Cart < ApplicationRecord
     cart_item
   end
 
-  def remove_item(decor_item)
-    cart_items.find_by(decor_item_id: decor_item.id)&.destroy
+  def remove_item(product)
+    cart_items.find_by(product_id: product.id)&.destroy
   end
 
-  def update_quantity(decor_item, quantity)
-    cart_item = cart_items.find_by(decor_item_id: decor_item.id)
+  def update_quantity(product, quantity)
+    cart_item = cart_items.find_by(product_id: product.id)
     if cart_item
       if quantity <= 0
         cart_item.destroy

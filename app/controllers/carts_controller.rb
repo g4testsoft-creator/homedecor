@@ -3,7 +3,7 @@ class CartsController < ApplicationController
 
   def show
     if user_signed_in?
-      @cart_items = current_user.cart&.cart_items&.includes(:decor_item) || []
+      @cart_items = current_user.cart&.cart_items&.includes(:product) || []
     else
       # Build cart items from session for guest users
       @cart_items = build_guest_cart_items
@@ -11,13 +11,13 @@ class CartsController < ApplicationController
   end
 
   def add_item
-    decor_item = DecorItem.find(params[:decor_item_id])
+    product = Product.find(params[:product_id])
     quantity = params[:quantity].to_i.positive? ? params[:quantity].to_i : 1
     
     if user_signed_in?
-      @cart.add_item(decor_item, quantity)
+      @cart.add_item(product, quantity)
     else
-      add_item_to_guest_cart(decor_item, quantity)
+      add_item_to_guest_cart(product, quantity)
     end
     
     respond_to do |format|
@@ -31,13 +31,13 @@ class CartsController < ApplicationController
   end
 
   def remove_item
-    decor_item = DecorItem.find(params[:decor_item_id])
+    product = Product.find(params[:product_id])
     
     if user_signed_in?
-      @cart.remove_item(decor_item)
-      cart_items = @cart.cart_items.includes(:decor_item)
+      @cart.remove_item(product)
+      cart_items = @cart.cart_items.includes(:product)
     else
-      remove_item_from_guest_cart(decor_item)
+      remove_item_from_guest_cart(product)
       cart_items = build_guest_cart_items
     end
     
@@ -56,14 +56,14 @@ class CartsController < ApplicationController
   end
 
   def update_quantity
-    decor_item = DecorItem.find(params[:decor_item_id])
+    product = Product.find(params[:product_id])
     quantity = params[:quantity].to_i
     
     if user_signed_in?
-      @cart.update_quantity(decor_item, quantity)
-      cart_items = @cart.cart_items.includes(:decor_item)
+      @cart.update_quantity(product, quantity)
+      cart_items = @cart.cart_items.includes(:product)
     else
-      update_guest_cart_quantity(decor_item, quantity)
+      update_guest_cart_quantity(product, quantity)
       cart_items = build_guest_cart_items
     end
     
@@ -112,9 +112,9 @@ class CartsController < ApplicationController
 
   # Guest cart methods using session storage
 
-  def add_item_to_guest_cart(decor_item, quantity)
+  def add_item_to_guest_cart(product, quantity)
     cart_items = session[:cart_items] ||= {}
-    item_id = decor_item.id.to_s
+    item_id = product.id.to_s
     
     if cart_items[item_id]
       cart_items[item_id] += quantity
@@ -123,13 +123,13 @@ class CartsController < ApplicationController
     end
   end
 
-  def remove_item_from_guest_cart(decor_item)
-    session[:cart_items]&.delete(decor_item.id.to_s)
+  def remove_item_from_guest_cart(product)
+    session[:cart_items]&.delete(product.id.to_s)
   end
 
-  def update_guest_cart_quantity(decor_item, quantity)
+  def update_guest_cart_quantity(product, quantity)
     cart_items = session[:cart_items] ||= {}
-    item_id = decor_item.id.to_s
+    item_id = product.id.to_s
     
     if quantity <= 0
       cart_items.delete(item_id)
@@ -145,12 +145,12 @@ class CartsController < ApplicationController
   def build_guest_cart_items
     cart_items = session[:cart_items] ||= {}
     
-    cart_items.map do |decor_item_id, quantity|
-      decor_item = DecorItem.find_by(id: decor_item_id)
-      next unless decor_item
+    cart_items.map do |product_id, quantity|
+      product = Product.find_by(id: product_id)
+      next unless product
       
       # Create a simple object that mimics CartItem behavior
-      GuestCartItem.new(decor_item, quantity)
+      GuestCartItem.new(product, quantity)
     end.compact
   end
 end

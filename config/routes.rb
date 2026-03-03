@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  resources :decor_items, only: [:index, :show] do
+  resources :products, only: [:index, :show] do
     resources :reviews, only: [:create, :update, :destroy]
   end
 
@@ -20,6 +20,5 @@ Rails.application.routes.draw do
   end
 
   # Defines the root path route ("/")
-  # root "decor_items#index"
   root 'home#index'
 end

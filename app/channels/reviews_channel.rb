@@ -1,8 +1,9 @@
 # app/channels/reviews_channel.rb
 class ReviewsChannel < ApplicationCable::Channel
   def subscribed
-    stream_name = "reviews_for_decor_item_#{params[:decor_item_id]}"
+    stream_name = "reviews_for_product_#{params[:product_id]}"
     puts "[CHANNEL] User subscribed to #{stream_name}"
+    puts "[CHANNEL] Available params: #{params.to_h}"
     stream_from stream_name
   end
 

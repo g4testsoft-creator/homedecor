@@ -1,11 +1,11 @@
 class CartItem < ApplicationRecord
   belongs_to :cart
-  belongs_to :decor_item
+  belongs_to :product, foreign_key: 'product_id'
 
   validates :quantity, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  validates :decor_item_id, uniqueness: { scope: :cart_id }
+  validates :product_id, uniqueness: { scope: :cart_id }
 
   def total_price
-    decor_item.price * quantity
+    product.price * quantity
   end
 end

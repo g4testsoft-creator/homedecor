@@ -1,16 +1,16 @@
 <% cart_items.each do |cart_item| %>
   <div class="cart-item" id="cart-item-<%= cart_item.id %>">
-    <% if cart_item.decor_item.image.attached? %>
+    <% if cart_item.product.image.attached? %>
       <div class="cart-item-image">
-        <%= image_tag cart_item.decor_item.image, alt: cart_item.decor_item.name %>
+        <%= image_tag cart_item.product.image, alt: cart_item.product.name %>
       </div>
     <% else %>
       <div class="cart-item-image" style="background: #f0f0f0;"></div>
     <% end %>
 
     <div class="cart-item-details">
-      <%= link_to cart_item.decor_item.name, decor_item_path(cart_item.decor_item), class: "cart-item-name" %>
-      <p class="cart-item-price"><%= number_to_currency(cart_item.decor_item.price) %> each</p>
+      <%= link_to cart_item.product.name, product_path(cart_item.product), class: "cart-item-name" %>
+      <p class="cart-item-price"><%= number_to_currency(cart_item.product.price) %> each</p>
     </div>
 
     <div class="cart-item-controls">
@@ -22,10 +22,10 @@
              max="999">
       <button type="button"
               class="update-quantity-btn"
-              data-decor-item-id="<%= cart_item.decor_item_id %>"
-              onclick="updateQuantity('<%= cart_item.decor_item_id %>', this)">Update</button>
+              data-product-id="<%= cart_item.product_id %>"
+              onclick="updateQuantity('<%= cart_item.product_id %>', this)">Update</button>
       <%= button_to "Remove", 
-                    remove_item_cart_path(decor_item_id: cart_item.decor_item_id), 
+                    remove_item_cart_path(product_id: cart_item.product_id), 
                     method: :delete,
                     class: "remove-btn" %>
     </div>
@@ -37,14 +37,14 @@
 <% end %>
 
 <script>
-  function updateQuantity(decorItemId, button) {
-    const quantityInput = document.getElementById(`quantity_${decorItemId}`);
+  function updateQuantity(productId, button) {
+    const quantityInput = document.getElementById(`quantity_${productId}`);
     const quantity = quantityInput.value;
     
     const formData = new FormData();
     formData.append('quantity', quantity);
     
-    fetch(`<%= update_quantity_cart_path %>?decor_item_id=${decorItemId}`, {
+    fetch(`<%= update_quantity_cart_path %>?product_id=${productId}`, {
       method: 'PATCH',
       headers: {
         'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content

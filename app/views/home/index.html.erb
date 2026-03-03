@@ -23,12 +23,12 @@
 <section class="items-section">
   <div class="section-header">
     <h2 class="section-title">Newest Arrivals</h2>
-    <%= link_to "View All", decor_items_path, class: "view-all-link" %>
+    <%= link_to "View All", products_path, class: "view-all-link" %>
   </div>
   
   <div class="decor-items-grid">
     <% @newest_items.each do |item| %>
-      <%= render 'decor_item_card', item: item %>
+      <%= render 'product_card', item: item %>
     <% end %>
   </div>
 </section>

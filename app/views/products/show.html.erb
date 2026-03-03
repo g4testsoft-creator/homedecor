@@ -1,43 +1,42 @@
-<!-- app/views/decor_items/show.html.erb -->
 <div class="decor-show"
      data-controller="reviews-subscription"
-     data-reviews-subscription-decor-item-id-value="<%= @decor_item.id %>">
+     data-reviews-subscription-product-id-value="<%= @product.id %>">
   
   <div class="decor-show-card">
-    <% if @decor_item.image.attached? %>
+    <% if @product.image.attached? %>
       <div class="decor-show-image">
-        <%= image_tag @decor_item.image, alt: @decor_item.name %>
+        <%= image_tag @product.image, alt: @product.name %>
       </div>
     <% else %>
       <div class="decor-show-image">
-        <img src="https://via.placeholder.com/600x400?text=No+Image" alt="<%= @decor_item.name %>">
+        <img src="https://via.placeholder.com/600x400?text=No+Image" alt="<%= @product.name %>">
       </div>
     <% end %>
 
     <div class="decor-show-content">
-      <h1 class="decor-show-title"><%= @decor_item.name %></h1>
+      <h1 class="decor-show-title"><%= @product.name %></h1>
 
-      <% if @decor_item.price.present? %>
+      <% if @product.price.present? %>
         <div class="decor-show-price">
-          <%= number_to_currency(@decor_item.price) %>
+          <%= number_to_currency(@product.price) %>
         </div>
       <% end %>
 
-      <% if @decor_item.description.present? %>
+      <% if @product.description.present? %>
         <p class="decor-show-description">
-          <%= simple_format(@decor_item.description) %>
+          <%= simple_format(@product.description) %>
         </p>
       <% end %>
 
       <!-- Rating section with target for updates -->
-      <div id="decor_rating_<%= @decor_item.id %>" 
+      <div id="product_rating_<%= @product.id %>" 
            data-reviews-subscription-target="ratingDisplay">
-        <%= render "decor_items/rating", decor_item: @decor_item %>
+        <%= render "products/rating", product: @product %>
       </div>
 
       <div class="decor-show-actions">
         <form id="add-to-cart-form" action="<%= add_item_cart_path %>" method="post" class="add-to-cart-form">
-          <input type="hidden" name="decor_item_id" value="<%= @decor_item.id %>">
+          <input type="hidden" name="product_id" value="<%= @product.id %>">
           <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
           <div class="quantity-selector">
             <label for="quantity">Quantity:</label>
@@ -45,7 +44,7 @@
           </div>
           <button type="submit" class="btn-primary btn-add-to-cart">Add to Cart</button>
         </form>
-        <%= link_to "Back to Home", decor_items_path, class: "btn-secondary" %>
+        <%= link_to "Back to Home", root_path, class: "btn-secondary" %>
       </div>
     </div>
   </div>
@@ -56,10 +55,10 @@
       <h2>Customer Reviews</h2>
 
       <!-- Review Form -->
-      <%= render "reviews/form", decor_item: @decor_item %>
+      <%= render "reviews/form", product: @product %>
 
       <!-- No reviews message -->
-      <% if @decor_item.reviews.empty? %>
+      <% if @product.reviews.empty? %>
         <div id="no-reviews-message" 
              class="no-reviews-message"
              data-reviews-subscription-target="noReviewsMessage">
@@ -69,10 +68,10 @@
 
       <!-- Reviews list with target for updates -->
       <div class="reviews-list" 
-           id="reviews_<%= @decor_item.id %>"
+           id="reviews_<%= @product.id %>"
            data-reviews-subscription-target="reviewsList">
-        <% @decor_item.reviews.order(created_at: :desc).each do |review| %>
-          <%= render "reviews/review", review: review, decor_item: @decor_item, current_user: current_user %>
+        <% @product.reviews.order(created_at: :desc).each do |review| %>
+          <%= render "reviews/review", review: review, product: @product, current_user: current_user %>
         <% end %>
       </div>
     </div>

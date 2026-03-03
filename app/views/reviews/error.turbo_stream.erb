@@ -9,7 +9,7 @@
       <% end %>
       
       <% if user_signed_in? %>
-        <%= form_with(model: [@decor_item, Review.new], local: true, id: "review-form-element") do |form| %>
+        <%= form_with(model: [@product, Review.new], local: true, id: "review-form-element") do |form| %>
           <div class="form-group">
             <%= form.label :rating, "Rating" %>
             <div class="rating-input" id="rating-input">

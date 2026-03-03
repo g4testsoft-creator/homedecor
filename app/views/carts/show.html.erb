@@ -13,7 +13,7 @@
 
       <div class="cart-actions">
         <%= button_to "Clear Cart", clear_cart_path, method: :post, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
-        <%= link_to "Continue Shopping", decor_items_path, class: "btn btn-secondary" %>
+        <%= link_to "Continue Shopping", products_path, class: "btn btn-secondary" %>
         <%= link_to "Checkout", "#", class: "btn btn-primary" %>
         
       </div>
@@ -21,7 +21,7 @@
   <% else %>
     <div class="empty-cart">
       <p class="empty-cart-message">Your cart is empty</p>
-      <%= link_to "Continue Shopping", decor_items_path, class: "btn btn-primary" %>
+      <%= link_to "Continue Shopping", products_path, class: "btn btn-primary" %>
     </div>
   <% end %>
 </div>

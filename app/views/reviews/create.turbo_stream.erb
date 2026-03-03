@@ -2,7 +2,7 @@
 
 <%# Reset the form for the current user %>
 <%= turbo_stream.replace "review-form-element" do %>
-  <%= render "reviews/form", decor_item: @decor_item %>
+  <%= render "reviews/form", product: @product %>
 <% end %>
 
 <%# Show success message (optional) %>

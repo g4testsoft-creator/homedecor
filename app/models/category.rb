@@ -1,5 +1,5 @@
 class Category < ApplicationRecord
-  has_many :decor_items, dependent: :nullify
+  has_many :products, dependent: :nullify
   
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true
@@ -13,7 +13,7 @@ class Category < ApplicationRecord
   
   def self.create_default_categories
     categories = [
-      { name: 'Newest Arrivals', slug: NEWEST, description: 'Recently added decor items' },
+      { name: 'Newest Arrivals', slug: NEWEST, description: 'Recently added products' },
       { name: 'Most Popular', slug: POPULAR, description: 'Highly rated by our community' },
       { name: 'Trending Now', slug: TRENDING, description: 'What everyone is talking about' },
       { name: 'Living Room', slug: 'living-room', description: 'Decor for your living space' },

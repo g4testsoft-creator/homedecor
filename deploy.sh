@@ -31,8 +31,14 @@ echo "🗄 Migrating database..."
 rails db:migrate
 echo "✅ Database migrated"
 
+# --- 5. Seed database ---
+echo "🌱 Seeding database..."
+rails db:seed
+echo "✅ Database seeded"
+
 # --- 6. Precompile assets ---
 echo "🎨 Precompiling assets..."
+rails assets:clobber
 rails assets:precompile
 echo "✅ Assets precompiled"
 

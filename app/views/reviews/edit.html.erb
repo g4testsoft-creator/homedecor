@@ -1,7 +1,7 @@
 <div class="edit-review-container">
   <h2>Edit Your Review</h2>
 
-  <%= form_with(model: [@decor_item, @review], local: true) do |form| %>
+  <%= form_with(model: [@product, @review], local: true) do |form| %>
     <% if @review.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h2>
@@ -32,7 +32,7 @@
 
     <div class="form-actions">
       <%= form.submit "Update Review", class: "btn btn-primary" %>
-      <%= link_to "Cancel", @decor_item, class: "btn btn-secondary" %>
+      <%= link_to "Cancel", @product, class: "btn btn-secondary" %>
     </div>
   <% end %>
 </div>

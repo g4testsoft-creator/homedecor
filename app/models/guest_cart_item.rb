@@ -2,23 +2,23 @@
 # Provides the same interface as CartItem but for unauthenticated users
 
 class GuestCartItem
-  attr_accessor :decor_item, :quantity
+  attr_accessor :product, :quantity
 
-  def initialize(decor_item, quantity)
-    @decor_item = decor_item
+  def initialize(product, quantity)
+    @product = product
     @quantity = quantity
   end
 
   def total_price
-    decor_item.price * quantity
+    product.price * quantity
   end
 
   def id
-    decor_item.id
+    product.id
   end
 
-  def decor_item_id
-    decor_item.id
+  def product_id
+    product.id
   end
 
   # Make it compatible with Rails rendering
