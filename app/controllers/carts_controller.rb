@@ -21,6 +21,14 @@ class CartsController < ApplicationController
     end
     
     respond_to do |format|
+      format.json do
+        render json: {
+          success: true,
+          message: "#{product.name} added to cart",
+          quantity: quantity,
+          product_name: product.name
+        }
+      end
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace("cart_count", partial: "carts/cart_count")
       end

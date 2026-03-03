@@ -35,7 +35,7 @@
       </div>
 
       <div class="decor-show-actions">
-        <form id="add-to-cart-form" action="<%= add_item_cart_path %>" method="post" class="add-to-cart-form">
+        <form id="add-to-cart-form" action="<%= add_item_cart_path %>" method="post" class="add-to-cart-form" data-controller="add-to-cart" data-product-name="<%= @product.name %>">
           <input type="hidden" name="product_id" value="<%= @product.id %>">
           <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
           <div class="quantity-selector">

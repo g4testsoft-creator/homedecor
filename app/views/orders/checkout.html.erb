@@ -1,0 +1,510 @@
+<div class="checkout-container">
+  <h1 class="checkout-title">Checkout</h1>
+
+  <div class="checkout-content">
+    <div class="checkout-form-section">
+      <%= form_with(model: @order, local: true, class: "checkout-form", data: { controller: "checkout-form" }) do |form| %>
+        <% if @order.errors.any? %>
+          <div id="error_explanation" class="alert alert-danger">
+            <h4><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h4>
+            <ul>
+              <% @order.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <!-- Contact Information -->
+        <fieldset class="form-section">
+          <legend>Contact Information</legend>
+          
+          <div class="form-group">
+            <%= form.label :email %>
+            <%= form.email_field :email, class: "form-control", placeholder: "your@email.com", required: false, data: { "checkout-form-target": "field" } %>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :phone %>
+            <%= form.telephone_field :phone, class: "form-control", placeholder: "(555) 123-4567", required: false, data: { "checkout-form-target": "field" } %>
+          </div>
+        </fieldset>
+
+        <!-- Shipping Address -->
+        <fieldset class="form-section">
+          <legend>Shipping Address</legend>
+          
+          <div class="form-group">
+            <%= form.label :shipping_address, "Street Address" %>
+            <%= form.text_field :shipping_address, class: "form-control", placeholder: "123 Main Street", required: false, data: { "checkout-form-target": "field" } %>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <%= form.label :shipping_city, "City" %>
+              <%= form.text_field :shipping_city, class: "form-control", placeholder: "New York", required: false, data: { "checkout-form-target": "field" } %>
+            </div>
+
+            <div class="form-group">
+              <%= form.label :shipping_state, "State" %>
+              <%= form.text_field :shipping_state, class: "form-control", placeholder: "NY", required: false, data: { "checkout-form-target": "field" } %>
+            </div>
+
+            <div class="form-group">
+              <%= form.label :shipping_zip, "ZIP Code" %>
+              <%= form.text_field :shipping_zip, class: "form-control", placeholder: "10001", required: false, data: { "checkout-form-target": "field" } %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= form.label :shipping_country, "Country" %>
+            <%= form.text_field :shipping_country, class: "form-control", placeholder: "United States", required: false, data: { "checkout-form-target": "field" } %>
+          </div>
+        </fieldset>
+
+        <!-- Payment Method -->
+        <fieldset class="form-section">
+          <legend>Payment Method</legend>
+          
+          <div class="payment-method-info">
+            <div class="payment-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              <span>Cash on Delivery</span>
+            </div>
+            <p class="payment-description">
+              Pay securely when your order arrives at your doorstep. No prepayment required.
+            </p>
+          </div>
+        </fieldset>
+
+        <div class="checkout-actions">
+          <%= form.submit "Place Order", class: "btn btn-primary btn-lg", id: "place-order-btn", disabled: false, data: { "checkout-form-target": "submitBtn" } %>
+          <%= link_to "Back to Cart", cart_path, class: "btn btn-secondary" %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Order Summary Sidebar -->
+    <div class="order-summary-section">
+      <div class="order-summary">
+        <h2 class="summary-title">Order Summary</h2>
+
+        <div class="summary-items">
+          <% @cart.cart_items.each do |item| %>
+            <div class="summary-item">
+              <div class="item-info">
+                <p class="item-name"><%= item.product.name %></p>
+                <p class="item-quantity">Qty: <%= item.quantity %></p>
+              </div>
+              <p class="item-price">
+                <%= number_to_currency(item.product.price * item.quantity) %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-line">
+          <span>Subtotal:</span>
+          <span><%= number_to_currency(@cart.total_price) %></span>
+        </div>
+
+        <div class="summary-line">
+          <span>Tax (8%):</span>
+          <span><%= number_to_currency(@cart.total_price * 0.08) %></span>
+        </div>
+
+        <div class="summary-line">
+          <span>Shipping:</span>
+          <span class="free-shipping">FREE</span>
+        </div>
+
+        <div class="summary-line summary-total">
+          <span>Total:</span>
+          <span><%= number_to_currency(@cart.total_price * 1.08) %></span>
+        </div>
+
+        <div class="summary-note">
+          <p>✓ Free shipping on all orders</p>
+          <p>✓ 30-day money-back guarantee</p>
+          <p>✓ Secure checkout</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .checkout-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  .checkout-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 20px;
+  }
+
+  .checkout-content {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 40px;
+  }
+
+  .checkout-form-section {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+  }
+
+  .form-section {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #f0f0f0;
+    border: none;
+  }
+
+  .form-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .form-section legend {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    display: block;
+    padding: 0;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #2c3e50;
+    box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 100px 120px;
+    gap: 20px;
+  }
+
+  .payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .payment-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 12px;
+    border: 2px solid #f0f0f0;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .payment-option input[type="radio"] {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+  }
+
+  .payment-option:hover {
+    border-color: #2c3e50;
+    background: #f9f9f9;
+  }
+
+  .payment-option input[type="radio"]:checked + span {
+    font-weight: 600;
+  }
+
+  .payment-option span {
+    font-size: 1rem;
+    color: #333;
+  }
+
+  .payment-method-info {
+    background: #f0f9ff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #d1ecf1;
+  }
+
+  .payment-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    color: #055160;
+    font-weight: 600;
+  }
+
+  .payment-badge svg {
+    color: #055160;
+  }
+
+  .payment-description {
+    color: #666;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  .checkout-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: #2c3e50;
+    color: white;
+    flex: 1;
+  }
+
+  .btn-primary:hover {
+    background: #34495e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
+  }
+
+  .btn-primary:disabled,
+  .btn-disabled {
+    background: #ccc;
+    color: #999;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-primary:disabled:hover,
+  .btn-disabled:hover {
+    background: #ccc;
+  }
+
+  .btn-lg {
+    padding: 14px 24px;
+    font-size: 1.1rem;
+  }
+
+  .btn-secondary {
+    background: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+    flex: 1;
+  }
+
+  .btn-secondary:hover {
+    background: #e9e9e9;
+    border-color: #bbb;
+  }
+
+  .order-summary-section {
+    position: relative;
+  }
+
+  .order-summary {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    position: sticky;
+    top: 20px;
+  }
+
+  .summary-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .summary-items {
+    margin-bottom: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .summary-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .item-info {
+    flex: 1;
+  }
+
+  .item-name {
+    font-weight: 500;
+    color: #333;
+    margin: 0 0 4px 0;
+    font-size: 0.95rem;
+  }
+
+  .item-quantity {
+    color: #999;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  .item-price {
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .summary-divider {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 20px 0;
+  }
+
+  .summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: #666;
+  }
+
+  .summary-line span:last-child {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .free-shipping {
+    color: #27ae60;
+    font-weight: 600;
+  }
+
+  .summary-total {
+    padding-top: 12px;
+    border-top: 2px solid #f0f0f0;
+    font-size: 1.2rem;
+    color: #2c3e50;
+  }
+
+  .summary-total span:last-child {
+    font-size: 1.3rem;
+  }
+
+  .summary-note {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .summary-note p {
+    margin: 8px 0;
+    font-size: 0.85rem;
+    color: #27ae60;
+  }
+
+  .alert {
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+  }
+
+  .alert-danger {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+  }
+
+  .alert-danger h4 {
+    margin-top: 0;
+  }
+
+  .alert-danger ul {
+    margin-bottom: 0;
+    padding-left: 20px;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .checkout-content {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .checkout-form-section {
+      padding: 20px;
+    }
+
+    .order-summary {
+      position: static;
+      margin-top: 20px;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    .checkout-actions {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
+</style>

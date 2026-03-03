@@ -46,9 +46,10 @@
         </div>
       <% end %>
       
-      <form class="card-add-to-cart" action="<%= add_item_cart_path %>" method="post">
+      <form class="card-add-to-cart" action="<%= add_item_cart_path %>" method="post" data-controller="add-to-cart" data-product-name="<%= item.name %>">
         <input type="hidden" name="product_id" value="<%= item.id %>">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="hidden" name="quantity" value="1">
         <button type="submit" class="card-add-btn">Add to Cart</button>
       </form>
       
