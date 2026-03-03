@@ -19,9 +19,9 @@ class RenameDecorItemsToProducts < ActiveRecord::Migration[7.0]
     
     # Update foreign keys
     remove_foreign_key :reviews, :decor_items if foreign_key_exists?(:reviews, :decor_items)
-    add_foreign_key :reviews, :products
+    # add_foreign_key :reviews, :products
     
     remove_foreign_key :cart_items, :decor_items if foreign_key_exists?(:cart_items, :decor_items)
-    add_foreign_key :cart_items, :products
+    # add_foreign_key :cart_items, :products
   end
 end
