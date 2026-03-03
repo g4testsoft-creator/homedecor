@@ -41,9 +41,9 @@
   <% end %>
 </div>
 
-<!-- Keep your existing JavaScript for the star rating functionality -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('turbo:load', function() {
+    console.log("Review form script loaded");
     const ratingInput = document.getElementById('rating-input');
     const submitBtn = document.getElementById('submit-review-btn');
     const reviewForm = document.getElementById('review-form-element');
