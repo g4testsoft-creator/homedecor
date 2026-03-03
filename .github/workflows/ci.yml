@@ -1,0 +1,136 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: homedecor_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/homedecor_test
+      REDIS_URL: redis://localhost:6379/1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.5
+          bundler-cache: true
+
+      - name: Setup database
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:migrate
+        timeout-minutes: 10
+
+      - name: Run RSpec
+        run: bundle exec rspec
+        timeout-minutes: 10
+
+      - name: Run Linters
+        run: |
+          bundle exec rubocop --config .rubocop.yml --display-cop-names || true
+        timeout-minutes: 5
+        continue-on-error: true
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/coverage.xml
+          fail_ci_if_error: false
+        continue-on-error: true
+
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.5
+          bundler-cache: true
+
+      - name: Run Rubocop
+        run: bundle exec rubocop --config .rubocop.yml --display-cop-names
+        continue-on-error: true
+
+      - name: Check bundle security
+        run: bundle audit check --update
+        continue-on-error: true
+
+  assets:
+    runs-on: ubuntu-latest
+    name: Assets
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.5
+          bundler-cache: true
+
+      - name: Precompile assets
+        run: bundle exec rails assets:precompile
+        timeout-minutes: 10
+
+  security:
+    runs-on: ubuntu-latest
+    name: Security
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.5
+          bundler-cache: true
+
+      - name: Run Brakeman
+        run: bundle exec brakeman -q -z --no-summary || true
+        continue-on-error: true
+
+      - name: Check bundle security
+        run: bundle audit check --update || true
+        continue-on-error: true
