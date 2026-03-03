@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: homedecor_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: cybernest
+      POSTGRES_DB: homedecor_production
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: homedecor_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    container_name: homedecor_web
+    command: bash -c "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0"
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: production
+      DATABASE_URL: postgresql://postgres:cybernest@postgres:5432/homedecor_production
+      REDIS_URL: redis://redis:6379/1
+      SECRET_KEY_BASE: a637e094e7b09eae1caf60f4a1586cb040a1ed63d4404db3897adbbae6bb497e02a7388c680f5ba6260a380aa14278a9936311fac337761eb1a6a63020b38508
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgres_data:
+  bundle_cache:
