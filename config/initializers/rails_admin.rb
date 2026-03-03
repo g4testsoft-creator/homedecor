@@ -1,36 +1,16 @@
 RailsAdmin.config do |config|
-  # == Configuration options ==
-  
-  # Require authentication before accessing the admin panel
   config.authenticate_with do
-    warden.authenticate! scope: :user
+    authenticate_or_request_with_http_basic('Admin Area') do |username, password|
+      username == 'admin' && password == 'password'
+    end
   end
   
-  # Require admin role to access the admin panel
-  config.authorize_with do
-    raise "Unauthorized" unless current_user.admin?
-  end
+  config.current_user_method { nil }
   
-  # Set the current user for the audit trail
-  config.current_user_method(&:current_user)
-
-  # == Cancan ==
-  # config.authorize_with :cancan
-
-  # == Pundit ==
-  # config.authorize_with :pundit
-
-  # == Devise ==
-  config.authenticate_with do
-    warden.authenticate! scope: :user
-  end
-  
-  config.current_user_method(&:current_user)
-
-  # == Accessible routes ==
   config.main_app_name = ['Home Decor', 'Admin Dashboard']
 
-  # == Dashboard Options ==
+  config.included_models = ['User', 'DecorItem', 'Category', 'Review', 'Product']
+
   config.actions do
     dashboard
     index
@@ -42,5 +22,4 @@ RailsAdmin.config do |config|
     delete
     show_in_app
   end
-  
 end
