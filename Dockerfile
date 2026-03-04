@@ -4,30 +4,35 @@ FROM ruby:3.3.5-slim
 # Set working directory
 WORKDIR /homedecor
 
-# Install system dependencies
+# Install system dependencies (including Node.js and Yarn properly)
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     postgresql-client \
-    nodejs \
-    npm \
-    yarn \
+    curl \
     git \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g yarn \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy Gemfile and Gemfile.lock
+# Copy Gemfile and Gemfile.lock first for better caching
 COPY Gemfile Gemfile.lock ./
 
-# Install gems
-RUN bundle install --jobs=4 --retry=3
+# Install gems with optimized settings for t3.micro
+RUN bundle config set --local without 'development test' && \
+    bundle config set --local jobs 2 && \
+    bundle config set --local retry 3 && \
+    bundle install
+
+# Copy package.json and yarn.lock for better caching
+COPY package.json yarn.lock ./
+
+RUN yarn install --frozen-lockfile
 
 # Copy application code
 COPY . .
 
-# Install Node dependencies
-RUN yarn install
-
-# Precompile assets
 RUN bundle exec rails assets:precompile
 
 # Expose port
