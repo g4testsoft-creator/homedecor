@@ -9,7 +9,7 @@ RailsAdmin.config do |config|
   
   config.main_app_name = ['Home Decor', 'Admin Dashboard']
 
-  config.included_models = ['User', 'DecorItem', 'Category', 'Review', 'Product']
+  config.included_models = ['User', 'DecorItem', 'Category', 'Review', 'Product', 'Order']
 
   config.actions do
     dashboard
