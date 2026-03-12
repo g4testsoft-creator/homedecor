@@ -42,8 +42,7 @@
 </div>
 
 <script>
-  document.addEventListener('turbo:load', function() {
-    console.log("Review form script loaded");
+  function initializeReviewForm() {
     const ratingInput = document.getElementById('rating-input');
     const submitBtn = document.getElementById('submit-review-btn');
     const reviewForm = document.getElementById('review-form-element');
@@ -104,7 +103,8 @@
     }
 
     updateSubmitButton();
-  });
+  }
+  initializeReviewForm();
 </script>
 
 <style>

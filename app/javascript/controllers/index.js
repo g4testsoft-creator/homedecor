@@ -3,7 +3,9 @@ import { application } from "controllers/application"
 import ReviewsSubscriptionController from "controllers/reviews_subscription_controller"
 import ToastController from "controllers/toast_controller"
 import AddToCartController from "controllers/add_to_cart_controller"
+import ProductGalleryController from "controllers/product_gallery_controller"
 
 application.register("reviews-subscription", ReviewsSubscriptionController)
 application.register("toast", ToastController)
 application.register("add-to-cart", AddToCartController)
+application.register("product-gallery", ProductGalleryController)

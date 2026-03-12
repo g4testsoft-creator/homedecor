@@ -4,16 +4,6 @@
   <div class="checkout-content">
     <div class="checkout-form-section">
       <%= form_with(model: @order, local: true, class: "checkout-form", data: { controller: "checkout-form" }) do |form| %>
-        <% if @order.errors.any? %>
-          <div id="error_explanation" class="alert alert-danger">
-            <h4><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h4>
-            <ul>
-              <% @order.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-            </ul>
-          </div>
-        <% end %>
 
         <!-- Contact Information -->
         <fieldset class="form-section">
@@ -21,12 +11,18 @@
           
           <div class="form-group">
             <%= form.label :email %>
-            <%= form.email_field :email, class: "form-control", placeholder: "your@email.com", required: false, data: { "checkout-form-target": "field" } %>
+            <%= form.email_field :email, class: "form-control" + (@order.errors.include?(:email) ? " field-error" : ""), placeholder: "your@email.com", required: false, data: { "checkout-form-target": "field" } %>
+            <% if @order.errors.include?(:email) %>
+              <p class="field-error-text"><%= @order.errors[:email].join(", ") %></p>
+            <% end %>
           </div>
 
           <div class="form-group">
             <%= form.label :phone %>
-            <%= form.telephone_field :phone, class: "form-control", placeholder: "(555) 123-4567", required: false, data: { "checkout-form-target": "field" } %>
+            <%= form.telephone_field :phone, class: "form-control" + (@order.errors.include?(:phone) ? " field-error" : ""), placeholder: "(555) 123-4567", required: false, data: { "checkout-form-target": "field" } %>
+            <% if @order.errors.include?(:phone) %>
+              <p class="field-error-text"><%= @order.errors[:phone].join(", ") %></p>
+            <% end %>
           </div>
         </fieldset>
 
@@ -36,29 +32,44 @@
           
           <div class="form-group">
             <%= form.label :shipping_address, "Street Address" %>
-            <%= form.text_field :shipping_address, class: "form-control", placeholder: "123 Main Street", required: false, data: { "checkout-form-target": "field" } %>
+            <%= form.text_field :shipping_address, class: "form-control" + (@order.errors.include?(:shipping_address) ? " field-error" : ""), placeholder: "123 Main Street", required: false, data: { "checkout-form-target": "field" } %>
+            <% if @order.errors.include?(:shipping_address) %>
+              <p class="field-error-text"><%= @order.errors[:shipping_address].join(", ") %></p>
+            <% end %>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <%= form.label :shipping_city, "City" %>
-              <%= form.text_field :shipping_city, class: "form-control", placeholder: "New York", required: false, data: { "checkout-form-target": "field" } %>
+              <%= form.text_field :shipping_city, class: "form-control" + (@order.errors.include?(:shipping_city) ? " field-error" : ""), placeholder: "New York", required: false, data: { "checkout-form-target": "field" } %>
+              <% if @order.errors.include?(:shipping_city) %>
+                <p class="field-error-text"><%= @order.errors[:shipping_city].join(", ") %></p>
+              <% end %>
             </div>
 
             <div class="form-group">
               <%= form.label :shipping_state, "State" %>
-              <%= form.text_field :shipping_state, class: "form-control", placeholder: "NY", required: false, data: { "checkout-form-target": "field" } %>
+              <%= form.text_field :shipping_state, class: "form-control" + (@order.errors.include?(:shipping_state) ? " field-error" : ""), placeholder: "NY", required: false, data: { "checkout-form-target": "field" } %>
+              <% if @order.errors.include?(:shipping_state) %>
+                <p class="field-error-text"><%= @order.errors[:shipping_state].join(", ") %></p>
+              <% end %>
             </div>
 
             <div class="form-group">
               <%= form.label :shipping_zip, "ZIP Code" %>
-              <%= form.text_field :shipping_zip, class: "form-control", placeholder: "10001", required: false, data: { "checkout-form-target": "field" } %>
+              <%= form.text_field :shipping_zip, class: "form-control" + (@order.errors.include?(:shipping_zip) ? " field-error" : ""), placeholder: "10001", required: false, data: { "checkout-form-target": "field" } %>
+              <% if @order.errors.include?(:shipping_zip) %>
+                <p class="field-error-text"><%= @order.errors[:shipping_zip].join(", ") %></p>
+              <% end %>
             </div>
           </div>
 
           <div class="form-group">
             <%= form.label :shipping_country, "Country" %>
-            <%= form.text_field :shipping_country, class: "form-control", placeholder: "United States", required: false, data: { "checkout-form-target": "field" } %>
+            <%= form.text_field :shipping_country, class: "form-control" + (@order.errors.include?(:shipping_country) ? " field-error" : ""), placeholder: "United States", required: false, data: { "checkout-form-target": "field" } %>
+            <% if @order.errors.include?(:shipping_country) %>
+              <p class="field-error-text"><%= @order.errors[:shipping_country].join(", ") %></p>
+            <% end %>
           </div>
         </fieldset>
 
@@ -214,6 +225,23 @@
     outline: none;
     border-color: #2c3e50;
     box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+  }
+
+  .form-control.field-error {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important;
+  }
+
+  .form-control.field-error:focus {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important;
+  }
+
+  .field-error-text {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 4px;
+    margin-bottom: 0;
   }
 
   .form-row {

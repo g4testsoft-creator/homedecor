@@ -5,9 +5,9 @@
     <div class="product-card-wrapper">
       <%= link_to product_path(item), class: "decor-card-link" do %>
         <div class="decor-card">
-          <% if item.image.attached? %>
+          <% if item.images.attached? %>
             <div class="card-image">
-              <%= image_tag item.image, alt: item.name, class: "card-img" %>
+              <%= image_tag item.images.first, alt: item.name, class: "card-img" %>
             </div>
           <% else %>
             <div class="card-image">

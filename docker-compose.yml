@@ -32,7 +32,7 @@ services:
   web:
     build: .
     container_name: homedecor_web
-    command: bash -c "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0"
+    command: bash -c "bundle exec rails db:migrate && rails db:seed && bundle exec rails server -b 0.0.0.0"
     volumes:
       - .:/app
       - bundle_cache:/usr/local/bundle
