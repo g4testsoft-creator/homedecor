@@ -1,44 +1,84 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "dropdown", "container"]
+  static targets = [
+    "desktopInput", "desktopDropdown", "desktopContainer",
+    "mobileInput", "mobileDropdown", "mobileContainer"
+  ]
   
   connect() {
     this.timeout = null
     this.selectedIndex = -1
     this.results = []
+    this.currentDevice = window.innerWidth <= 768 ? 'mobile' : 'desktop'
+    
+    // Handle resize events
+    window.addEventListener('resize', () => {
+      this.currentDevice = window.innerWidth <= 768 ? 'mobile' : 'desktop'
+    })
     
     // Close dropdown when clicking outside
     document.addEventListener("click", (event) => {
-      if (!this.containerTarget.contains(event.target)) {
-        this.hideDropdown()
+      if (this.hasDesktopContainer && !this.desktopContainerTarget.contains(event.target)) {
+        this.hideDropdown('desktop')
+      }
+      if (this.hasMobileContainer && !this.mobileContainerTarget.contains(event.target)) {
+        this.hideDropdown('mobile')
       }
     })
     
-    // Keyboard navigation
-    this.inputTarget.addEventListener("keydown", (event) => {
-      if (event.key === "ArrowDown") {
-        event.preventDefault()
-        this.selectNext()
-      } else if (event.key === "ArrowUp") {
-        event.preventDefault()
-        this.selectPrevious()
-      } else if (event.key === "Escape") {
-        this.hideDropdown()
-      }
-    })
+    // Keyboard navigation for desktop
+    if (this.hasDesktopInput) {
+      this.desktopInputTarget.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowDown") {
+          event.preventDefault()
+          this.selectNext('desktop')
+        } else if (event.key === "ArrowUp") {
+          event.preventDefault()
+          this.selectPrevious('desktop')
+        } else if (event.key === "Escape") {
+          this.hideDropdown('desktop')
+        }
+      })
+    }
+    
+    // Keyboard navigation for mobile
+    if (this.hasMobileInput) {
+      this.mobileInputTarget.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowDown") {
+          event.preventDefault()
+          this.selectNext('mobile')
+        } else if (event.key === "ArrowUp") {
+          event.preventDefault()
+          this.selectPrevious('mobile')
+        } else if (event.key === "Escape") {
+          this.hideDropdown('mobile')
+        }
+      })
+    }
   }
   
-  search() {
+  // Desktop search
+  desktopSearch() {
+    this.search('desktop')
+  }
+  
+  // Mobile search
+  mobileSearch() {
+    this.search('mobile')
+  }
+  
+  search(device) {
     clearTimeout(this.timeout)
-    const query = this.inputTarget.value.trim()
+    const input = device === 'desktop' ? this.desktopInputTarget : this.mobileInputTarget
+    const query = input.value.trim()
     
     if (query.length < 2) {
-      this.hideDropdown()
+      this.hideDropdown(device)
       return
     }
     
-    this.showLoading()
+    this.showLoading(device)
     
     this.timeout = setTimeout(() => {
       fetch(`/products/search?q=${encodeURIComponent(query)}`, {
@@ -49,19 +89,21 @@ export default class extends Controller {
       .then(response => response.json())
       .then(data => {
         this.results = data
-        this.displayResults(data)
+        this.displayResults(data, device)
       })
       .catch(error => {
         console.error("Search error:", error)
-        this.showError()
+        this.showError(device)
       })
     }, 300)
   }
   
-  displayResults(products) {
+  displayResults(products, device) {
+    const dropdown = device === 'desktop' ? this.desktopDropdownTarget : this.mobileDropdownTarget
+    
     if (products.length === 0) {
-      this.dropdownTarget.innerHTML = '<div class="search-no-results">No products found</div>'
-      this.dropdownTarget.classList.add("show")
+      dropdown.innerHTML = '<div class="search-no-results">No products found</div>'
+      dropdown.classList.add("show")
       return
     }
     
@@ -72,36 +114,41 @@ export default class extends Controller {
       </a>
     `).join("")
     
-    this.dropdownTarget.innerHTML = html
-    this.dropdownTarget.classList.add("show")
+    dropdown.innerHTML = html
+    dropdown.classList.add("show")
     this.selectedIndex = -1
   }
   
-  showLoading() {
-    this.dropdownTarget.innerHTML = '<div class="search-loading">Searching...</div>'
-    this.dropdownTarget.classList.add("show")
+  showLoading(device) {
+    const dropdown = device === 'desktop' ? this.desktopDropdownTarget : this.mobileDropdownTarget
+    dropdown.innerHTML = '<div class="search-loading">Searching...</div>'
+    dropdown.classList.add("show")
   }
   
-  showError() {
-    this.dropdownTarget.innerHTML = '<div class="search-no-results">Error searching products</div>'
-    this.dropdownTarget.classList.add("show")
+  showError(device) {
+    const dropdown = device === 'desktop' ? this.desktopDropdownTarget : this.mobileDropdownTarget
+    dropdown.innerHTML = '<div class="search-no-results">Error searching products</div>'
+    dropdown.classList.add("show")
   }
   
-  hideDropdown() {
-    this.dropdownTarget.classList.remove("show")
+  hideDropdown(device) {
+    const dropdown = device === 'desktop' ? this.desktopDropdownTarget : this.mobileDropdownTarget
+    dropdown.classList.remove("show")
     this.selectedIndex = -1
   }
   
-  selectNext() {
-    const items = this.dropdownTarget.querySelectorAll(".search-dropdown-item")
+  selectNext(device) {
+    const dropdown = device === 'desktop' ? this.desktopDropdownTarget : this.mobileDropdownTarget
+    const items = dropdown.querySelectorAll(".search-dropdown-item")
     if (items.length === 0) return
     
     this.selectedIndex = (this.selectedIndex + 1) % items.length
     this.highlightItem(items)
   }
   
-  selectPrevious() {
-    const items = this.dropdownTarget.querySelectorAll(".search-dropdown-item")
+  selectPrevious(device) {
+    const dropdown = device === 'desktop' ? this.desktopDropdownTarget : this.mobileDropdownTarget
+    const items = dropdown.querySelectorAll(".search-dropdown-item")
     if (items.length === 0) return
     
     this.selectedIndex = this.selectedIndex - 1
@@ -122,13 +169,25 @@ export default class extends Controller {
     })
   }
   
-  submitSearch(event) {
+  // Desktop submit
+  desktopSubmit(event) {
+    this.submitSearch(event, 'desktop')
+  }
+  
+  // Mobile submit
+  mobileSubmit(event) {
+    this.submitSearch(event, 'mobile')
+  }
+  
+  submitSearch(event, device) {
     event.preventDefault()
-    const query = this.inputTarget.value.trim()
+    const input = device === 'desktop' ? this.desktopInputTarget : this.mobileInputTarget
+    const dropdown = device === 'desktop' ? this.desktopDropdownTarget : this.mobileDropdownTarget
+    const query = input.value.trim()
     
     if (this.selectedIndex >= 0) {
       // Navigate to selected product
-      const selectedItem = this.dropdownTarget.querySelectorAll(".search-dropdown-item")[this.selectedIndex]
+      const selectedItem = dropdown.querySelectorAll(".search-dropdown-item")[this.selectedIndex]
       if (selectedItem) {
         window.location.href = selectedItem.href
         return

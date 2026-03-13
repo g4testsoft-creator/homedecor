@@ -25,12 +25,23 @@
         justify-content: space-between;
         align-items: center;
         gap: 24px;
+        flex-wrap: wrap;
       }
 
-      .nav-search {
+      /* Desktop search - in header */
+      .nav-search-desktop {
         flex: 1;
         max-width: 400px;
         position: relative;
+        display: block;
+      }
+
+      /* Mobile search - below header */
+      .nav-search-mobile {
+        width: 100%;
+        padding: 0 3px;
+        position: relative;
+        display: none;
       }
 
       .header-search-form {
@@ -219,6 +230,34 @@
       body {
         margin: 0;
         padding: 0;
+      }
+
+      /* Mobile responsive */
+      @media (max-width: 768px) {
+        .nav-container {
+          padding: 12px 16px;
+        }
+
+        .nav-search-desktop {
+          display: none;
+        }
+
+        .nav-search-mobile {
+          display: block;
+        }
+
+        .nav-links {
+          gap: 8px;
+        }
+
+        .nav-link {
+          padding: 6px 8px;
+          font-size: 0.85rem;
+        }
+
+        .cart-link {
+          padding: 6px 8px;
+        }
       }
 
       /* Auth pages (Sign in / Sign up) */
@@ -555,16 +594,17 @@
       <div class="nav-container">
         <%= link_to "Home Decor", root_path, class: "nav-logo" %>
         
-        <div class="nav-search" data-search-target="container">
+        <!-- Desktop Search - inside header -->
+        <div class="nav-search-desktop" data-search-target="desktopContainer">
           <div class="header-search-form">
             <input type="text" 
                    placeholder="Search products..." 
                    class="header-search-input"
-                   data-search-target="input"
-                   data-action="input->search#search keydown.enter->search#submitSearch">
+                   data-search-target="desktopInput"
+                   data-action="input->search#desktopSearch keydown.enter->search#desktopSubmit">
           </div>
           
-          <div class="search-dropdown" data-search-target="dropdown">
+          <div class="search-dropdown" data-search-target="desktopDropdown">
             <!-- Search results will appear here -->
           </div>
         </div>
@@ -578,6 +618,21 @@
           <% else %>
             <%= link_to "Sign in", new_user_session_path, class: "nav-link" %>
           <% end %>
+        </div>
+      </div>
+
+      <!-- Mobile Search - below header -->
+      <div class="nav-search-mobile" data-search-target="mobileContainer">
+        <div class="header-search-form">
+          <input type="text" 
+                 placeholder="Search products..." 
+                 class="header-search-input"
+                 data-search-target="mobileInput"
+                 data-action="input->search#mobileSearch keydown.enter->search#mobileSubmit">
+        </div>
+        
+        <div class="search-dropdown" data-search-target="mobileDropdown">
+          <!-- Search results will appear here -->
         </div>
       </div>
     </nav>
