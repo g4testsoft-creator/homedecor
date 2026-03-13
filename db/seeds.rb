@@ -8,6 +8,12 @@ Cart.destroy_all
 Product.destroy_all
 Category.destroy_all
 
+# Reset primary key sequences (PostgreSQL specific)
+ActiveRecord::Base.connection.reset_pk_sequence!('categories')
+ActiveRecord::Base.connection.reset_pk_sequence!('products')
+ActiveRecord::Base.connection.reset_pk_sequence!('reviews')
+
+
 puts "Seeding categories and products with multiple images..."
 
 categories_data = [
