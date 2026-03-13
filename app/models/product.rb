@@ -32,6 +32,16 @@ class Product < ApplicationRecord
   scope :by_category, ->(category_slug) { 
     joins(:category).where(categories: { slug: category_slug }) 
   }
+
+  scope :search, ->(query) {
+    if query.present?
+      left_joins(:category)
+        .where("products.name ILIKE ? OR categories.name ILIKE ?", "%#{query}%", "%#{query}%")
+        .distinct
+    else
+      all
+    end
+  }
   
   scope :on_sale, -> { where('compare_at_price IS NOT NULL AND compare_at_price > price') }
 

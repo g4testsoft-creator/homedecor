@@ -24,6 +24,95 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 24px;
+      }
+
+      .nav-search {
+        flex: 1;
+        max-width: 400px;
+        position: relative;
+      }
+
+      .header-search-form {
+        width: 100%;
+      }
+
+      .header-search-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-family: inherit;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+      }
+
+      .header-search-input:focus {
+        outline: none;
+        border-color: #2c3e50;
+        box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.1);
+      }
+
+      .search-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-top: none;
+        border-radius: 0 0 6px 6px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+      }
+
+      .search-dropdown.show {
+        display: block;
+      }
+
+      .search-dropdown-item {
+        padding: 10px 12px;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+        transition: background 0.2s ease;
+        text-decoration: none;
+        color: #333;
+        display: block;
+      }
+
+      .search-dropdown-item:last-child {
+        border-bottom: none;
+      }
+
+      .search-dropdown-item:hover {
+        background: #f5f5f5;
+      }
+
+      .search-dropdown-item h4 {
+        margin: 0 0 4px 0;
+        font-size: 0.95rem;
+        color: #333;
+      }
+
+      .search-dropdown-item p {
+        margin: 0;
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      .search-loading {
+        padding: 10px 12px;
+        color: #666;
+        font-style: italic;
+      }
+
+      .search-no-results {
+        padding: 10px 12px;
+        color: #666;
       }
 
       .nav-logo {
@@ -40,6 +129,7 @@
       .nav-links {
         display: flex;
         align-items: center;
+        gap: 16px;
       }
 
       .cart-link {
@@ -85,7 +175,7 @@
       }
 
       .nav-link {
-        padding: 6px 4px;
+        padding: 8px 12px;
         border-radius: 6px;
         text-decoration: none;
         color: #333;
@@ -460,10 +550,25 @@
     </style>
   </head>
 
-  <body data-controller="toast">
+  <body data-controller="search toast">
     <nav class="main-nav">
       <div class="nav-container">
         <%= link_to "Home Decor", root_path, class: "nav-logo" %>
+        
+        <div class="nav-search" data-search-target="container">
+          <div class="header-search-form">
+            <input type="text" 
+                   placeholder="Search products..." 
+                   class="header-search-input"
+                   data-search-target="input"
+                   data-action="input->search#search keydown.enter->search#submitSearch">
+          </div>
+          
+          <div class="search-dropdown" data-search-target="dropdown">
+            <!-- Search results will appear here -->
+          </div>
+        </div>
+
         <div class="nav-links">
           <div id="cart_count" class="cart-count-container">
             <%= render "carts/cart_header" %>

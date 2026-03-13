@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   resources :products, only: [:index, :show] do
+    collection do
+      get :search
+    end
     resources :reviews, only: [:create, :update, :destroy]
   end
 
