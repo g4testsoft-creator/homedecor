@@ -147,13 +147,11 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_12_074748) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
-  add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "users"
   add_foreign_key "products", "categories"
-  add_foreign_key "reviews", "products"
   add_foreign_key "reviews", "products"
   add_foreign_key "reviews", "users"
 end
