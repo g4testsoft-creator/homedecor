@@ -56,7 +56,7 @@ docker compose build
 docker compose up -d
 
 echo "🗄 Running migrations..."
-# docker compose exec web rails db:migrate
+docker compose exec web rails db:migrate
 
 echo "🚀 Deployment completed!"
 
