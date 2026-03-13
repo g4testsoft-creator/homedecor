@@ -150,8 +150,11 @@ jobs:
           script: |
             cd /home/ubuntu/homedecor
             git pull origin main
-            docker compose down
             docker compose build
+            docker compose run --rm -e RAILS_ENV=production web rails assets:clobber
+            docker compose run --rm -e RAILS_ENV=production web rails assets:precompile
+            docker compose run --rm web rails db:migrate
+            docker compose down
             docker compose up -d
             docker compose exec web rails db:migrate
             docker compose exec web rails db:seed
