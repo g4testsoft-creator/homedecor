@@ -208,6 +208,135 @@
         color: white;
       }
 
+      /* Hamburger Menu */
+      .hamburger-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        margin: 0;
+      }
+
+      .hamburger-menu span {
+        display: block;
+        width: 24px;
+        height: 2.5px;
+        background: #333;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+      }
+
+      .hamburger-menu.active {
+        display: none;
+      }
+
+      /* Sidebar */
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .sidebar-overlay.open {
+        display: block;
+        opacity: 1;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100vh;
+        background: white;
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #f0f0f0;
+        background: #f9f9f9;
+      }
+
+      .sidebar-title {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .sidebar-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #999;
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s ease;
+      }
+
+      .sidebar-close:hover {
+        color: #333;
+      }
+
+      .sidebar-nav {
+        display: flex;
+        flex-direction: column;
+        padding: 16px 0;
+        flex: 1;
+      }
+
+      .sidebar-nav-link {
+        display: block;
+        padding: 14px 20px;
+        color: #333;
+        text-decoration: none;
+        font-size: 0.95rem;
+        border-left: 3px solid transparent;
+        transition: all 0.2s ease;
+      }
+
+      .sidebar-nav-link:hover {
+        background: #f5f5f5;
+        border-left-color: #2c3e50;
+        color: #2c3e50;
+      }
+
+      .sidebar-nav-link.active {
+        background: #f0f7ff;
+        border-left-color: #2c3e50;
+        color: #2c3e50;
+        font-weight: 600;
+      }
+
       /* Categories Navigation Bar */
       .categories-nav {
         background: #f8f9fa;
@@ -360,10 +489,33 @@
         padding: 0;
       }
 
+      /* Desktop view - sidebar always visible */
+      @media (min-width: 769px) {
+        body.sidebar-open {
+          margin-left: 280px;
+        }
+
+        .nav-search-desktop {
+          display: block;
+        }
+
+        .nav-search-mobile {
+          display: none;
+        }
+      }
+
       /* Mobile responsive */
       @media (max-width: 768px) {
+        body {
+          margin-left: 0;
+        }
+
         .nav-container {
           padding: 12px 16px;
+        }
+
+        .hamburger-menu {
+          display: flex;
         }
 
         .nav-search-desktop {
@@ -400,6 +552,15 @@
         .all-products-link {
           padding: 10px 0;
           font-size: 0.85rem;
+        }
+
+        .categories-nav {
+          display: none;
+          margin-left: 0;
+        }
+
+        .sidebar {
+          transform: translateX(-100%);
         }
       }
 
@@ -732,9 +893,19 @@
     </style>
   </head>
 
-  <body data-controller="search toast categories">
+  <body data-controller="search toast categories sidebar">
     <nav class="main-nav">
       <div class="nav-container">
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger-menu" 
+                data-sidebar-target="toggle"
+                data-action="click->sidebar#toggle"
+                aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
         <%= link_to "Home Decor", root_path, class: "nav-logo" %>
         
         <!-- Desktop Search - inside header -->
@@ -779,6 +950,29 @@
         </div>
       </div>
     </nav>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" data-sidebar-target="overlay" data-action="click->sidebar#close"></div>
+
+    <!-- Sidebar Menu -->
+    <aside class="sidebar" data-sidebar-target="sidebar">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Categories</h2>
+        <button class="sidebar-close" 
+                data-action="click->sidebar#close"
+                aria-label="Close menu">
+          ✕
+        </button>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <%= link_to "All Products", root_path, class: "sidebar-nav-link" %>
+        
+        <% Category.all.each do |category| %>
+          <%= link_to category.name, category_path(category.slug), class: "sidebar-nav-link" %>
+        <% end %>
+      </nav>
+    </aside>
 
     <!-- Categories Navigation Bar -->
     <div class="categories-nav">

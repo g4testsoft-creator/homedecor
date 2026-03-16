@@ -8,6 +8,7 @@ import HelloController from "controllers/hello_controller"
 import CheckoutFormController from "controllers/checkout_form_controller"
 import SearchController from "controllers/search_controller"
 import CategoriesController from "controllers/categories_controller"
+import SidebarController from "controllers/sidebar_controller"
 
 application.register("reviews-subscription", ReviewsSubscriptionController)
 application.register("toast", ToastController)
@@ -17,3 +18,4 @@ application.register("hello", HelloController)
 application.register("checkout-form", CheckoutFormController)
 application.register("search", SearchController)
 application.register("categories", CategoriesController)
+application.register("sidebar", SidebarController)

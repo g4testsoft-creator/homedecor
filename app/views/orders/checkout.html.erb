@@ -655,8 +655,14 @@
 <script src="https://js.stripe.com/v3/"></script>
 
 <script>
-  document.addEventListener('turbo:load', function() {
-    alert('here');
+  function initializeStripeCheckout() {
+    if (typeof Stripe === 'undefined') {
+      console.warn('Stripe not loaded yet, retrying...');
+      setTimeout(initializeStripeCheckout, 500);
+      return;
+    }
+
+    console.log("Initializing Stripe checkout");
     const stripe = Stripe('<%= @stripe_publishable_key %>');
     const elements = stripe.elements();
     const cardElement = elements.create('card');
@@ -795,5 +801,16 @@
         });
       }
     }
-  });
+  }
+
+  // Initialize on DOMContentLoaded and Turbo events
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeStripeCheckout);
+  } else {
+    initializeStripeCheckout();
+  }
+
+  // Also listen for Turbo navigation
+  document.addEventListener('turbo:load', initializeStripeCheckout);
+  document.addEventListener('turbo:render', initializeStripeCheckout);
 </script>

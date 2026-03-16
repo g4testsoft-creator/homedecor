@@ -29,7 +29,7 @@ export default class extends Controller {
   }
   
   close() {
-    this.menuTarget.classList.remove("show")
+    // this.menuTarget.classList.remove("show")
     this.isOpen = false
   }
 }

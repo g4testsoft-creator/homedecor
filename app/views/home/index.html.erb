@@ -23,7 +23,21 @@
 <section class="items-section">
   <div class="section-header">
     <h2 class="section-title">Newest Arrivals</h2>
-    <%= link_to "View All", products_path, class: "view-all-link" %>
+    <div class="section-controls">
+      <form method="get" class="sort-form" id="sort-form">
+        <label for="sort-select">Sort by:</label>
+        <select id="sort-select" name="sort" class="sort-dropdown" onchange="document.getElementById('sort-form').submit()">
+          <option value="newest" <%= 'selected' if @sort == 'newest' %>>Newest</option>
+          <option value="price-low" <%= 'selected' if @sort == 'price-low' %>>Price: Low to High</option>
+          <option value="price-high" <%= 'selected' if @sort == 'price-high' %>>Price: High to Low</option>
+          <option value="name-asc" <%= 'selected' if @sort == 'name-asc' %>>Name: A to Z</option>
+          <option value="name-desc" <%= 'selected' if @sort == 'name-desc' %>>Name: Z to A</option>
+          <option value="rating" <%= 'selected' if @sort == 'rating' %>>Highest Rated</option>
+          <option value="popular" <%= 'selected' if @sort == 'popular' %>>Most Reviewed</option>
+        </select>
+      </form>
+      <%= link_to "View All", products_path, class: "view-all-link" %>
+    </div>
   </div>
   
   <div class="decor-items-grid">
@@ -47,12 +61,56 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
+    gap: 20px;
+    flex-wrap: wrap;
   }
   
   .section-title {
     font-size: 1.8rem;
     color: #333;
     margin: 0;
+  }
+
+  .section-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .sort-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sort-form label {
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+  }
+
+  .sort-dropdown {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    color: #333;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 180px;
+  }
+
+  .sort-dropdown:hover {
+    border-color: #2c3e50;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .sort-dropdown:focus {
+    outline: none;
+    border-color: #2c3e50;
+    box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
   }
   
   .view-all-link {
@@ -63,6 +121,7 @@
     border: 1px solid #2c3e50;
     border-radius: 6px;
     transition: all 0.3s ease;
+    white-space: nowrap;
   }
   
   .view-all-link:hover {
@@ -194,5 +253,76 @@
     padding-top: 10px;
     border-top: 1px solid #eee;
     margin-top: auto;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      width: 100%;
+    }
+
+    .section-controls {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .sort-form {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .sort-dropdown {
+      width: 100%;
+      min-width: unset;
+    }
+
+    .view-all-link {
+      flex-shrink: 0;
+    }
+
+    .categories-grid {
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 40px;
+    }
+
+    .decor-items-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 30px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .categories-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .decor-items-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .section-controls {
+      flex-direction: column;
+    }
+
+    .sort-form {
+      width: 100%;
+    }
+
+    .sort-dropdown {
+      width: 100%;
+    }
+
+    .view-all-link {
+      width: 100%;
+      text-align: center;
+    }
   }
 </style>
