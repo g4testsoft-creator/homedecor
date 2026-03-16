@@ -30,9 +30,7 @@ services:
   web:
     build: .
     container_name: homedecor_web
-    command: bash -c "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0"
-    volumes:
-      - bundle_cache:/usr/local/bundle
+    command: bash -c "bundle exec rails server -b 0.0.0.0 -p 3000"
     ports:
       - "3000:3000"
     environment:
@@ -47,7 +45,7 @@ services:
         condition: service_healthy
     stdin_open: true
     tty: true
+    restart: unless-stopped
 
 volumes:
   postgres_data:
-  bundle_cache:

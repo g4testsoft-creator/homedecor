@@ -149,8 +149,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/homedecor
-            git pull origin main
-            docker compose down
-            docker compose build
-            docker compose up -d
-            docker compose exec web rails db:migrate
+            chmod +x ./deploy.sh
+            ./deploy.sh

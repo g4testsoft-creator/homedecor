@@ -4,6 +4,12 @@ FROM ruby:3.3.5-slim
 # Set working directory
 WORKDIR /homedecor
 
+# Production defaults (and smaller memory spikes for Node)
+ENV RAILS_ENV=production \
+    RACK_ENV=production \
+    NODE_ENV=production \
+    NODE_OPTIONS=--max_old_space_size=512
+
 # Install system dependencies (including Node.js and Yarn properly)
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -33,7 +39,7 @@ RUN yarn install --frozen-lockfile
 # Copy application code
 COPY . .
 
-RUN bundle exec rails assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 # Expose port
 EXPOSE 3000

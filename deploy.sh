@@ -43,6 +43,7 @@
 
 
 # !/bin/bash
+#!/bin/bash
 set -e
 
 cd /home/ubuntu/homedecor
@@ -52,12 +53,29 @@ git pull origin main
 
 echo "🐳 Rebuilding Docker..."
 docker compose down
+
 docker compose build
-docker compose up -d
 
-echo "🗄 Running migrations..."
-docker compose exec web rails db:migrate
+echo "🗄 Starting database and redis..."
+docker compose up -d postgres redis
 
-echo "🚀 Deployment completed!"
+# Wait for database to be ready
+echo "⏳ Waiting for database to be ready..."
+sleep 10
+
+# Run migrations separately
+echo "🗄 Running database setup..."
+docker compose run --rm web bundle exec rails db:migrate
+
+echo "🚀 Starting web service..."
+docker compose up -d web
+
+echo "📋 Checking container status..."
+docker compose ps
+
+echo "📋 Checking logs..."
+docker compose logs --tail=50 web
+
+echo "✅ Deployment completed!"
 
 
