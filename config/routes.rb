@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   resources :orders, only: [:create] do
     collection do
       get :checkout
+      post :create_payment_intent
     end
     member do
       get :confirmation

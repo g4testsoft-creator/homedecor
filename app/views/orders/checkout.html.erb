@@ -11,7 +11,7 @@
           
           <div class="form-group">
             <%= form.label :email %>
-            <%= form.email_field :email, class: "form-control" + (@order.errors.include?(:email) ? " field-error" : ""), placeholder: "your@email.com", required: false, data: { "checkout-form-target": "field" } %>
+            <%= form.email_field :email, class: "form-control" + (@order.errors.include?(:email) ? " field-error" : ""), placeholder: "your@email.com", required: true, data: { "checkout-form-target": "field" } %>
             <% if @order.errors.include?(:email) %>
               <p class="field-error-text"><%= @order.errors[:email].join(", ") %></p>
             <% end %>
@@ -19,7 +19,7 @@
 
           <div class="form-group">
             <%= form.label :phone %>
-            <%= form.telephone_field :phone, class: "form-control" + (@order.errors.include?(:phone) ? " field-error" : ""), placeholder: "(555) 123-4567", required: false, data: { "checkout-form-target": "field" } %>
+            <%= form.telephone_field :phone, class: "form-control" + (@order.errors.include?(:phone) ? " field-error" : ""), placeholder: "(555) 123-4567", required: true, data: { "checkout-form-target": "field" } %>
             <% if @order.errors.include?(:phone) %>
               <p class="field-error-text"><%= @order.errors[:phone].join(", ") %></p>
             <% end %>
@@ -32,7 +32,7 @@
           
           <div class="form-group">
             <%= form.label :shipping_address, "Street Address" %>
-            <%= form.text_field :shipping_address, class: "form-control" + (@order.errors.include?(:shipping_address) ? " field-error" : ""), placeholder: "123 Main Street", required: false, data: { "checkout-form-target": "field" } %>
+            <%= form.text_field :shipping_address, class: "form-control" + (@order.errors.include?(:shipping_address) ? " field-error" : ""), placeholder: "123 Main Street", required: true, data: { "checkout-form-target": "field" } %>
             <% if @order.errors.include?(:shipping_address) %>
               <p class="field-error-text"><%= @order.errors[:shipping_address].join(", ") %></p>
             <% end %>
@@ -41,7 +41,7 @@
           <div class="form-row">
             <div class="form-group">
               <%= form.label :shipping_city, "City" %>
-              <%= form.text_field :shipping_city, class: "form-control" + (@order.errors.include?(:shipping_city) ? " field-error" : ""), placeholder: "New York", required: false, data: { "checkout-form-target": "field" } %>
+              <%= form.text_field :shipping_city, class: "form-control" + (@order.errors.include?(:shipping_city) ? " field-error" : ""), placeholder: "New York", required: true, data: { "checkout-form-target": "field" } %>
               <% if @order.errors.include?(:shipping_city) %>
                 <p class="field-error-text"><%= @order.errors[:shipping_city].join(", ") %></p>
               <% end %>
@@ -49,7 +49,7 @@
 
             <div class="form-group">
               <%= form.label :shipping_state, "State" %>
-              <%= form.text_field :shipping_state, class: "form-control" + (@order.errors.include?(:shipping_state) ? " field-error" : ""), placeholder: "NY", required: false, data: { "checkout-form-target": "field" } %>
+              <%= form.text_field :shipping_state, class: "form-control" + (@order.errors.include?(:shipping_state) ? " field-error" : ""), placeholder: "NY", required: true, data: { "checkout-form-target": "field" } %>
               <% if @order.errors.include?(:shipping_state) %>
                 <p class="field-error-text"><%= @order.errors[:shipping_state].join(", ") %></p>
               <% end %>
@@ -57,7 +57,7 @@
 
             <div class="form-group">
               <%= form.label :shipping_zip, "ZIP Code" %>
-              <%= form.text_field :shipping_zip, class: "form-control" + (@order.errors.include?(:shipping_zip) ? " field-error" : ""), placeholder: "10001", required: false, data: { "checkout-form-target": "field" } %>
+              <%= form.text_field :shipping_zip, class: "form-control" + (@order.errors.include?(:shipping_zip) ? " field-error" : ""), placeholder: "10001", required: true, data: { "checkout-form-target": "field" } %>
               <% if @order.errors.include?(:shipping_zip) %>
                 <p class="field-error-text"><%= @order.errors[:shipping_zip].join(", ") %></p>
               <% end %>
@@ -66,7 +66,7 @@
 
           <div class="form-group">
             <%= form.label :shipping_country, "Country" %>
-            <%= form.text_field :shipping_country, class: "form-control" + (@order.errors.include?(:shipping_country) ? " field-error" : ""), placeholder: "United States", required: false, data: { "checkout-form-target": "field" } %>
+            <%= form.text_field :shipping_country, class: "form-control" + (@order.errors.include?(:shipping_country) ? " field-error" : ""), placeholder: "United States", required: true, data: { "checkout-form-target": "field" } %>
             <% if @order.errors.include?(:shipping_country) %>
               <p class="field-error-text"><%= @order.errors[:shipping_country].join(", ") %></p>
             <% end %>
@@ -77,21 +77,38 @@
         <fieldset class="form-section">
           <legend>Payment Method</legend>
           
-          <div class="payment-method-info">
-            <div class="payment-badge">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-              </svg>
-              <span>Cash on Delivery</span>
+          <div class="payment-methods">
+            <!-- Credit Card Option -->
+            <div class="payment-option-group">
+              <label class="payment-option-label">
+                <%= radio_button_tag :payment_method, 'card', true, { class: "payment-radio" } %>
+                <span class="payment-option-text">
+                  <strong>Credit/Debit Card</strong>
+                  <span class="payment-option-cards">Visa, Mastercard, Amex</span>
+                </span>
+              </label>
+              
+              <div class="payment-card-section" id="stripe-element-section">
+                <div id="card-element" class="card-element-container"></div>
+                <div id="card-errors" class="card-errors"></div>
+              </div>
             </div>
-            <p class="payment-description">
-              Pay securely when your order arrives at your doorstep. No prepayment required.
-            </p>
+
+            <!-- Cash on Delivery Option -->
+            <div class="payment-option-group">
+              <label class="payment-option-label">
+                <%= radio_button_tag :payment_method, 'cash', false, { class: "payment-radio" } %>
+                <span class="payment-option-text">
+                  <strong>Cash on Delivery</strong>
+                  <span class="payment-option-desc">Pay when your order arrives</span>
+                </span>
+              </label>
+            </div>
           </div>
         </fieldset>
 
         <div class="checkout-actions">
+          <input type="hidden" id="payment-intent-id" name="payment_intent_id" value="">
           <%= form.submit "Place Order", class: "btn btn-primary btn-lg", id: "place-order-btn", disabled: false, data: { "checkout-form-target": "submitBtn" } %>
           <%= link_to "Back to Cart", cart_path, class: "btn btn-secondary" %>
         </div>
@@ -535,4 +552,248 @@
       width: 100%;
     }
   }
+
+  /* Stripe Payment Styles */
+  .payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .payment-option-group {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.2s ease;
+  }
+
+  .payment-option-group:has(.payment-radio:checked) {
+    border-color: #2c3e50;
+    background: #f9f9f9;
+  }
+
+  .payment-option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    margin-bottom: 12px;
+  }
+
+  .payment-radio {
+    margin-top: 4px;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: #2c3e50;
+  }
+
+  .payment-option-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .payment-option-text strong {
+    color: #333;
+    font-size: 1rem;
+  }
+
+  .payment-option-cards,
+  .payment-option-desc {
+    font-size: 0.85rem;
+    color: #999;
+  }
+
+  .payment-card-section {
+    display: none;
+  }
+
+  .payment-option-group:has(.payment-radio:checked) .payment-card-section {
+    display: block;
+    padding-top: 16px;
+    border-top: 1px solid #ddd;
+  }
+
+  .card-element-container {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    background: white;
+  }
+
+  .StripeElement {
+    box-sizing: border-box;
+    height: 40px;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+    box-shadow: 0 1px 3px 0 #e6ebf1;
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+  }
+
+  .StripeElement--focus {
+    box-shadow: 0 1px 3px 0 #cfd7df;
+    border-color: #2c3e50;
+  }
+
+  .StripeElement--invalid {
+    border-color: #dc3545;
+  }
+
+  .card-errors {
+    color: #dc3545;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    min-height: 20px;
+  }
 </style>
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+  document.addEventListener('turbo:load', function() {
+    alert('here');
+    const stripe = Stripe('<%= @stripe_publishable_key %>');
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
+
+    // Only mount if element exists
+    const cardElementContainer = document.getElementById('card-element');
+    if (cardElementContainer) {
+      cardElement.mount('#card-element');
+
+      const cardErrors = document.getElementById('card-errors');
+      cardElement.addEventListener('change', function(event) {
+        if (event.error) {
+          cardErrors.textContent = event.error.message;
+        } else {
+          cardErrors.textContent = '';
+        }
+      });
+
+      // Handle payment method switching
+      const paymentMethodInputs = document.querySelectorAll('input[name="payment_method"]');
+      const form = document.querySelector('.checkout-form');
+      const submitBtn = document.getElementById('place-order-btn');
+
+      paymentMethodInputs.forEach(input => {
+        input.addEventListener('change', function() {
+          if (this.value === 'card') {
+            form.dataset.paymentMethod = 'card';
+          } else {
+            form.dataset.paymentMethod = 'cash';
+          }
+        });
+      });
+
+      // Form submission
+      if (form) {
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+
+          // Validate required fields
+          const requiredFields = [
+            'order_email',
+            'order_phone',
+            'order_shipping_address',
+            'order_shipping_city',
+            'order_shipping_state',
+            'order_shipping_zip',
+            'order_shipping_country'
+          ];
+
+          let allFieldsValid = true;
+          const errors = [];
+
+          requiredFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field && (!field.value || field.value.trim() === '')) {
+              allFieldsValid = false;
+              const fieldLabel = field.previousElementSibling?.textContent || fieldId;
+              errors.push(`${fieldLabel} is required`);
+              field.classList.add('field-error');
+            } else if (field) {
+              field.classList.remove('field-error');
+            }
+          });
+
+          if (!allFieldsValid) {
+            document.getElementById('card-errors').textContent = errors.join(', ');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Place Order';
+            return;
+          }
+
+          const selectedMethod = document.querySelector('input[name="payment_method"]:checked').value;
+
+          if (selectedMethod === 'card') {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+
+            // Create payment intent on the backend
+            try {
+              const response = await fetch('<%= create_payment_intent_orders_path %>', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                  amount: <%= (@cart.total_price * 1.08 * 100).to_i %>,
+                  email: document.querySelector('#order_email').value
+                })
+              });
+
+              const paymentData = await response.json();
+
+              if (paymentData.error) {
+                document.getElementById('card-errors').textContent = paymentData.error;
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Place Order';
+                return;
+              }
+
+              // Confirm card payment
+              const result = await stripe.confirmCardPayment(paymentData.client_secret, {
+                payment_method: {
+                  card: cardElement,
+                  billing_details: {
+                    email: document.querySelector('#order_email').value,
+                    address: {
+                      line1: document.querySelector('#order_shipping_address').value,
+                      city: document.querySelector('#order_shipping_city').value,
+                      state: document.querySelector('#order_shipping_state').value,
+                      postal_code: document.querySelector('#order_shipping_zip').value,
+                      country: 'US'
+                    }
+                  }
+                }
+              });
+
+              if (result.error) {
+                document.getElementById('card-errors').textContent = result.error.message;
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Place Order';
+              } else {
+                // Payment succeeded, set the intent ID and submit
+                document.getElementById('payment-intent-id').value = result.paymentIntent.id;
+                form.submit();
+              }
+            } catch (error) {
+              document.getElementById('card-errors').textContent = 'An error occurred. Please try again.';
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Place Order';
+            }
+          } else {
+            // Cash on delivery - just submit the form
+            form.submit();
+          }
+        });
+      }
+    }
+  });
+</script>
