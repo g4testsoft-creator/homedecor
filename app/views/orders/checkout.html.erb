@@ -656,6 +656,7 @@
 
 <script>
   function initializeStripeCheckout() {
+    console.log("i am here11111")
     if (typeof Stripe === 'undefined') {
       console.warn('Stripe not loaded yet, retrying...');
       setTimeout(initializeStripeCheckout, 500);
@@ -687,6 +688,13 @@
       const submitBtn = document.getElementById('place-order-btn');
 
       paymentMethodInputs.forEach(input => {
+        input.removeEventListener('change', function() {
+          if (this.value === 'card') {
+            form.dataset.paymentMethod = 'card';
+          } else {
+            form.dataset.paymentMethod = 'cash';
+          }
+        });
         input.addEventListener('change', function() {
           if (this.value === 'card') {
             form.dataset.paymentMethod = 'card';
@@ -805,12 +813,12 @@
 
   // Initialize on DOMContentLoaded and Turbo events
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeStripeCheckout);
+    // document.addEventListener('DOMContentLoaded', initializeStripeCheckout);
   } else {
-    initializeStripeCheckout();
+    //initializeStripeCheckout();
   }
 
   // Also listen for Turbo navigation
   document.addEventListener('turbo:load', initializeStripeCheckout);
-  document.addEventListener('turbo:render', initializeStripeCheckout);
+  // document.addEventListener('turbo:render', initializeStripeCheckout);
 </script>

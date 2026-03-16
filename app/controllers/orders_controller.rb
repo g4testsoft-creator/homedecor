@@ -62,7 +62,7 @@ class OrdersController < ApplicationController
 
     if payment_method == 'card'
       # Process Stripe payment
-      process_stripe_payment(@order, params[:payment_intent_id])
+      return process_stripe_payment(@order, params[:payment_intent_id])
     elsif @order.save
       create_order_items
       @cart.clear
@@ -130,35 +130,35 @@ class OrdersController < ApplicationController
         # Confirm the payment intent
         intent = Stripe::PaymentIntent.retrieve(payment_intent_id)
         
-        if intent.status == 'succeeded'
-          order.save
+        if intent.status.in?(%w[succeeded processing])
+          unless order.save
+            render :checkout, status: :unprocessable_entity
+            return
+          end
           create_order_items
           @cart.clear
           
-          # Store transaction ID
-          order.update(stripe_payment_intent_id: payment_intent_id)
-          
-          redirect_to confirmation_order_path(order), notice: 'Payment successful! Order placed.'
+          return redirect_to confirmation_order_path(order), notice: 'Payment successful! Order placed.'
         else
-          redirect_to checkout_orders_path, alert: 'Payment was not completed. Please try again.'
+          return redirect_to checkout_orders_path, alert: 'Payment was not completed. Please try again.'
         end
       else
-        redirect_to checkout_orders_path, alert: 'Payment information is missing. Please try again.'
+        return redirect_to checkout_orders_path, alert: 'Payment information is missing. Please try again.'
       end
     rescue Stripe::CardError => e
-      redirect_to checkout_orders_path, alert: "Payment failed: #{e.message}"
+      return redirect_to checkout_orders_path, alert: "Payment failed: #{e.message}"
     rescue Stripe::RateLimitError
-      redirect_to checkout_orders_path, alert: 'Too many requests. Please try again later.'
+      return redirect_to checkout_orders_path, alert: 'Too many requests. Please try again later.'
     rescue Stripe::InvalidRequestError => e
-      redirect_to checkout_orders_path, alert: "Invalid request: #{e.message}"
+      return redirect_to checkout_orders_path, alert: "Invalid request: #{e.message}"
     rescue Stripe::AuthenticationError
-      redirect_to checkout_orders_path, alert: 'Authentication error. Please contact support.'
+      return redirect_to checkout_orders_path, alert: 'Authentication error. Please contact support.'
     rescue Stripe::APIConnectionError
-      redirect_to checkout_orders_path, alert: 'Network error. Please try again.'
+      return redirect_to checkout_orders_path, alert: 'Network error. Please try again.'
     rescue Stripe::StripeError => e
-      redirect_to checkout_orders_path, alert: "Payment error: #{e.message}"
+      return redirect_to checkout_orders_path, alert: "Payment error: #{e.message}"
     rescue StandardError => e
-      redirect_to checkout_orders_path, alert: "An error occurred: #{e.message}"
+      return redirect_to checkout_orders_path, alert: "An error occurred: #{e.message}"
     end
   end
 end
