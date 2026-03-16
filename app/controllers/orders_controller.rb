@@ -66,6 +66,8 @@ class OrdersController < ApplicationController
     elsif @order.save
       create_order_items
       @cart.clear
+      # Send confirmation email
+      OrderMailer.order_confirmation(@order).deliver_later
       redirect_to confirmation_order_path(@order), notice: 'Order placed successfully'
     else
       render :checkout, status: :unprocessable_entity
@@ -137,6 +139,8 @@ class OrdersController < ApplicationController
           end
           create_order_items
           @cart.clear
+          
+          OrderMailer.order_confirmation(order).deliver_later
           
           return redirect_to confirmation_order_path(order), notice: 'Payment successful! Order placed.'
         else

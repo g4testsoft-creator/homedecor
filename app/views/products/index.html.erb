@@ -1,4 +1,19 @@
-<h1 class="heading">Home</h1>
+<h1 class="heading">All Products</h1>
+
+<div class="products-header">
+  <form method="get" class="sort-form" id="products-sort-form">
+    <label for="products-sort-select">Sort by:</label>
+    <select id="products-sort-select" name="sort" class="sort-dropdown" onchange="document.getElementById('products-sort-form').submit()">
+      <option value="newest" <%= 'selected' if @sort == 'newest' %>>Newest</option>
+      <option value="price-low" <%= 'selected' if @sort == 'price-low' %>>Price: Low to High</option>
+      <option value="price-high" <%= 'selected' if @sort == 'price-high' %>>Price: High to Low</option>
+      <option value="name-asc" <%= 'selected' if @sort == 'name-asc' %>>Name: A to Z</option>
+      <option value="name-desc" <%= 'selected' if @sort == 'name-desc' %>>Name: Z to A</option>
+      <option value="rating" <%= 'selected' if @sort == 'rating' %>>Highest Rated</option>
+      <option value="popular" <%= 'selected' if @sort == 'popular' %>>Most Reviewed</option>
+    </select>
+  </form>
+</div>
 
 <div class="decor-items-grid">
   <% @products.each do |item| %>
@@ -42,6 +57,48 @@
 </div>
 
 <style>
+  .products-header {
+    display: flex;
+    align-items: center;
+    padding: 20px 24px;
+    gap: 20px;
+  }
+
+  .sort-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sort-form label {
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+  }
+
+  .sort-dropdown {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    color: #333;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 180px;
+  }
+
+  .sort-dropdown:hover {
+    border-color: #2c3e50;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .sort-dropdown:focus {
+    outline: none;
+    border-color: #2c3e50;
+    box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+  }
+
   .decor-items-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -123,5 +180,45 @@
     font-size: 1.2rem;
     padding-top: 10px;
     border-top: 1px solid #eee;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .products-header {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 15px 16px;
+    }
+
+    .sort-form {
+      width: 100%;
+    }
+
+    .sort-dropdown {
+      width: 100%;
+      min-width: unset;
+    }
+
+    .heading {
+      font-size: 1.5rem;
+      padding: 0 16px;
+    }
+
+    .decor-items-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      padding: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .decor-items-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .heading {
+      font-size: 1.3rem;
+    }
   }
 </style>
