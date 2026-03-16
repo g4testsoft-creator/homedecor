@@ -45,6 +45,7 @@ class ProductsController < ApplicationController
              .select('products.*, COUNT(reviews.id) as review_count')
              .order('review_count DESC, products.id DESC')
     when 'newest'
+      Product.order(created_at: :desc)
     else
       Product.order(created_at: :desc)
     end
