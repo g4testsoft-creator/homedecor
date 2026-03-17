@@ -128,7 +128,7 @@
                 <p class="item-quantity">Qty: <%= item.quantity %></p>
               </div>
               <p class="item-price">
-                <%= number_to_currency(item.product.price * item.quantity) %>
+                <%= format_price(item.product.price * item.quantity) %>
               </p>
             </div>
           <% end %>
@@ -138,12 +138,12 @@
 
         <div class="summary-line">
           <span>Subtotal:</span>
-          <span><%= number_to_currency(@cart.total_price) %></span>
+          <span><%= format_price(@cart.total_price) %></span>
         </div>
 
         <div class="summary-line">
           <span>Tax (8%):</span>
-          <span><%= number_to_currency(@cart.total_price * 0.08) %></span>
+          <span><%= format_price(@cart.total_price * 0.08) %></span>
         </div>
 
         <div class="summary-line">
@@ -153,7 +153,7 @@
 
         <div class="summary-line summary-total">
           <span>Total:</span>
-          <span><%= number_to_currency(@cart.total_price * 1.08) %></span>
+          <span><%= format_price(@cart.total_price * 1.08) %></span>
         </div>
 
         <div class="summary-note">

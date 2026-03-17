@@ -56,7 +56,7 @@
 
               <div class="product-footer">
                 <% if product.price.present? %>
-                  <span class="product-price"><%= number_to_currency(product.price) %></span>
+                  <span class="product-price"><%= format_price(product.price) %></span>
                 <% end %>
                 
                 <div class="product-rating">

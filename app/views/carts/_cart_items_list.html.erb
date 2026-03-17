@@ -9,7 +9,7 @@
     <% end %>
     <div class="cart-item-details">
       <%= link_to cart_item.product.name, product_path(cart_item.product), class: "cart-item-name" %>
-      <p class="cart-item-price"><%= number_to_currency(cart_item.product.price) %> each</p>
+      <p class="cart-item-price"><%= format_price(cart_item.product.price) %> each</p>
     </div>
 
     <div class="cart-item-controls">
@@ -30,7 +30,7 @@
     </div>
 
     <div class="cart-item-total">
-      <%= number_to_currency(cart_item.total_price) %>
+      <%= format_price(cart_item.total_price) %>
     </div>
   </div>
 <% end %>

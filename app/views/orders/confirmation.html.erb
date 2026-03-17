@@ -53,8 +53,8 @@
               <%= link_to item.product.name, product_path(item.product), class: "product-link" %>
             </div>
             <div class="col-qty"><%= item.quantity %></div>
-            <div class="col-price"><%= number_to_currency(item.unit_price) %></div>
-            <div class="col-total"><%= number_to_currency(item.item_total) %></div>
+            <div class="col-price"><%= format_price(item.unit_price) %></div>
+            <div class="col-total"><%= format_price(item.item_total) %></div>
           </div>
         <% end %>
       </div>
@@ -80,12 +80,12 @@
       <div class="summary-box">
         <div class="summary-line">
           <span>Subtotal:</span>
-          <span><%= number_to_currency(@order.subtotal) %></span>
+          <span><%= format_price(@order.subtotal) %></span>
         </div>
         
         <div class="summary-line">
           <span>Tax (8%):</span>
-          <span><%= number_to_currency(@order.tax) %></span>
+          <span><%= format_price(@order.tax) %></span>
         </div>
         
         <div class="summary-line">
@@ -97,7 +97,7 @@
         
         <div class="summary-line total">
           <span>Total Amount:</span>
-          <span><%= number_to_currency(@order.total) %></span>
+          <span><%= format_price(@order.total) %></span>
         </div>
 
         <div class="payment-method">

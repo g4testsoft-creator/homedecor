@@ -7,4 +7,8 @@ module ApplicationHelper
       image_tag "https://via.placeholder.com/400x300?text=No+Image", options
     end
   end
+
+  def format_price(amount)
+    number_to_currency(amount, unit: "Rs. ", precision: 0, separator: "")
+  end
 end

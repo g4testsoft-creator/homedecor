@@ -67,11 +67,11 @@
       <!-- Price Section -->
       <div class="price-section">
         <% if @product.compare_at_price.present? && @product.compare_at_price > @product.price %>
-          <span class="current-price"><%= number_to_currency(@product.price) %></span>
-          <span class="compare-price"><%= number_to_currency(@product.compare_at_price) %></span>
+          <span class="current-price"><%= format_price(@product.price) %></span>
+          <span class="compare-price"><%= format_price(@product.compare_at_price) %></span>
           <span class="discount-badge">-<%= ((@product.compare_at_price - @product.price) / @product.compare_at_price * 100).round %>%</span>
         <% else %>
-          <span class="current-price"><%= number_to_currency(@product.price) %></span>
+          <span class="current-price"><%= format_price(@product.price) %></span>
         <% end %>
       </div>
 
@@ -223,7 +223,7 @@
               <% end %>
               <div class="related-product-info">
                 <h3><%= related.name %></h3>
-                <p class="related-price"><%= number_to_currency(related.price) %></p>
+                <p class="related-price"><%= format_price(related.price) %></p>
               </div>
             <% end %>
           <% end %>

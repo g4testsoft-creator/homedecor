@@ -9,7 +9,7 @@
 %>
 <div class="cart-total-line">
   <strong>Subtotal:</strong>
-  <span><%= number_to_currency(subtotal) %></span>
+  <span><%= format_price(subtotal) %></span>
 </div>
 <div class="cart-total-line">
   <strong>Shipping:</strong>
@@ -17,9 +17,9 @@
 </div>
 <div class="cart-total-line">
   <strong>Tax:</strong>
-  <span><%= number_to_currency(subtotal * 0.1) %></span>
+  <span><%= format_price(subtotal * 0.1) %></span>
 </div>
 <div class="cart-total-final">
   <span>Total:</span>
-  <span><%= number_to_currency(subtotal * 1.1) %></span>
+  <span><%= format_price(subtotal * 1.1) %></span>
 </div>

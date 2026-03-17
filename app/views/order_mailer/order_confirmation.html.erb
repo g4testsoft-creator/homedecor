@@ -17,16 +17,16 @@
     <tr>
       <td><%= item.product.name %></td>
       <td><%= item.quantity %></td>
-      <td><%= number_to_currency(item.unit_price) %></td>
-      <td><%= number_to_currency(item.unit_price * item.quantity) %></td>
+      <td><%= format_price(item.unit_price) %></td>
+      <td><%= format_price(item.unit_price * item.quantity) %></td>
     </tr>
   <% end %>
 </table>
 
 <p style="margin-top: 20px;">
-  <strong>Subtotal:</strong> <%= number_to_currency(@order.subtotal) %><br>
-  <strong>Tax (8%):</strong> <%= number_to_currency(@order.tax) %><br>
-  <strong>Total:</strong> <%= number_to_currency(@order.total) %>
+  <strong>Subtotal:</strong> <%= format_price(@order.subtotal) %><br>
+  <strong>Tax (8%):</strong> <%= format_price(@order.tax) %><br>
+  <strong>Total:</strong> <%= format_price(@order.total) %>
 </p>
 
 <h3>Shipping Address</h3>

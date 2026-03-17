@@ -39,7 +39,7 @@
             
             <% if item.price.present? %>
               <div class="card-price">
-                <strong><%= number_to_currency(item.price) %></strong>
+                <strong><%= format_price(item.price) %></strong>
               </div>
             <% end %>
           </div>

@@ -25,7 +25,7 @@ class OrdersController < ApplicationController
 
       intent = Stripe::PaymentIntent.create(
         amount: amount,
-        currency: 'usd',
+        currency: 'pkr',
         receipt_email: email,
         metadata: {
           order_id: 'pending'

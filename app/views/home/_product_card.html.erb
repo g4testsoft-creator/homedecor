@@ -20,7 +20,7 @@
         
         <% if item.price.present? %>
           <div class="card-price">
-            <strong><%= number_to_currency(item.price) %></strong>
+            <strong>Rs. <%= item.price.to_i %></strong>
           </div>
         <% end %>
       </div>
