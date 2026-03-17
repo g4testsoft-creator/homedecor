@@ -2,7 +2,7 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     # Frontend domain(s)
-    origins 'http://localhost:4000', 'https://your-frontend.vercel.app'
+    origins 'http://localhost:4000', 'https://homedecor-frontend-v2.vercel.app'
 
     resource '*',
       headers: :any,
