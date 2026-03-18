@@ -6,7 +6,7 @@ class Order < ApplicationRecord
   enum status: { pending: 'pending', processing: 'processing', shipped: 'shipped', delivered: 'delivered', cancelled: 'cancelled' }
 
   validates :email, :phone, presence: true
-  validates :shipping_address, :shipping_city, :shipping_state, :shipping_zip, :shipping_country, presence: true
+  validates :shipping_address, :shipping_city, :shipping_zip, :shipping_country, presence: true
   validates :status, presence: true
   validates :total, numericality: { greater_than_or_equal_to: 0 }
 

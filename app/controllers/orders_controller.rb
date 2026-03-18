@@ -97,7 +97,7 @@ class OrdersController < ApplicationController
   def order_params
     params.require(:order).permit(
       :email, :phone,
-      :shipping_address, :shipping_city, :shipping_state, :shipping_zip, :shipping_country
+      :shipping_address, :shipping_city, :shipping_zip, :shipping_country
     )
   end
 
