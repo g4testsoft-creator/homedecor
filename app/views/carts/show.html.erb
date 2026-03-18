@@ -2,7 +2,7 @@
   <h1 class="cart-title">Shopping Cart</h1>
 
   <% if @cart_items.any? %>
-    <div id="cart_items_list" class="cart-items-section">
+    <div id="cart_items_list" class="cart-items-section" data-controller="cart">
       <%= render "cart_items_list", cart_items: @cart_items %>
     </div>
 

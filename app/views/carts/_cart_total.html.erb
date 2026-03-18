@@ -1,25 +1,23 @@
-<% 
-  subtotal = if defined?(cart_items) && cart_items.present?
-    cart_items.sum(&:total_price)
-  elsif user_signed_in? && current_user.cart.present?
-    current_user.cart.total_price
-  else
-    0
-  end
-%>
-<div class="cart-total-line">
-  <strong>Subtotal:</strong>
-  <span><%= format_price(subtotal) %></span>
-</div>
-<div class="cart-total-line">
-  <strong>Shipping:</strong>
-  <span>Free</span>
-</div>
-<div class="cart-total-line">
-  <strong>Tax:</strong>
-  <span><%= format_price(subtotal * 0.1) %></span>
-</div>
-<div class="cart-total-final">
-  <span>Total:</span>
-  <span><%= format_price(subtotal * 1.1) %></span>
+<div id="cart_total">
+  <% 
+    subtotal = if defined?(cart_items) && cart_items.present?
+      cart_items.sum(&:total_price)
+    elsif user_signed_in? && current_user.cart.present?
+      current_user.cart.total_price
+    else
+      0
+    end
+  %>
+  <div class="cart-total-line">
+    <strong>Subtotal:</strong>
+    <span><%= format_price(subtotal) %></span>
+  </div>
+  <div class="cart-total-line">
+    <strong>Shipping:</strong>
+    <span>Rs. 200</span>
+  </div>
+  <div class="cart-total-final">
+    <span>Total:</span>
+    <span><%= format_price(subtotal + 200) %></span>
+  </div>
 </div>

@@ -52,9 +52,9 @@ class CartsController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.replace("cart_items_list", partial: "cart_items_list", locals: { cart_items: cart_items }),
+          turbo_stream.remove("cart-item-#{product.id}"),
           turbo_stream.replace("cart_count", partial: "carts/cart_count"),
-          turbo_stream.replace("cart_total", partial: "cart_total", locals: { cart_items: cart_items })
+          turbo_stream.replace("cart_total", partial: "carts/cart_total", locals: { cart_items: cart_items })
         ]
       end
       format.html do

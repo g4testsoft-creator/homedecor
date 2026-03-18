@@ -32,7 +32,7 @@
           
           <div class="form-group">
             <%= form.label :shipping_address, "Street Address" %>
-            <%= form.text_field :shipping_address, class: "form-control" + (@order.errors.include?(:shipping_address) ? " field-error" : ""), placeholder: "123 Main Street", required: true, data: { "checkout-form-target": "field" } %>
+            <%= form.text_field :shipping_address, class: "form-control" + (@order.errors.include?(:shipping_address) ? " field-error" : ""), required: true, data: { "checkout-form-target": "field" } %>
             <% if @order.errors.include?(:shipping_address) %>
               <p class="field-error-text"><%= @order.errors[:shipping_address].join(", ") %></p>
             <% end %>
@@ -41,23 +41,15 @@
           <div class="form-row">
             <div class="form-group">
               <%= form.label :shipping_city, "City" %>
-              <%= form.text_field :shipping_city, class: "form-control" + (@order.errors.include?(:shipping_city) ? " field-error" : ""), placeholder: "New York", required: true, data: { "checkout-form-target": "field" } %>
+              <%= form.text_field :shipping_city, class: "form-control" + (@order.errors.include?(:shipping_city) ? " field-error" : ""), required: true, data: { "checkout-form-target": "field" } %>
               <% if @order.errors.include?(:shipping_city) %>
                 <p class="field-error-text"><%= @order.errors[:shipping_city].join(", ") %></p>
               <% end %>
             </div>
 
             <div class="form-group">
-              <%= form.label :shipping_state, "State" %>
-              <%= form.text_field :shipping_state, class: "form-control" + (@order.errors.include?(:shipping_state) ? " field-error" : ""), placeholder: "NY", required: true, data: { "checkout-form-target": "field" } %>
-              <% if @order.errors.include?(:shipping_state) %>
-                <p class="field-error-text"><%= @order.errors[:shipping_state].join(", ") %></p>
-              <% end %>
-            </div>
-
-            <div class="form-group">
               <%= form.label :shipping_zip, "ZIP Code" %>
-              <%= form.text_field :shipping_zip, class: "form-control" + (@order.errors.include?(:shipping_zip) ? " field-error" : ""), placeholder: "10001", required: true, data: { "checkout-form-target": "field" } %>
+              <%= form.text_field :shipping_zip, class: "form-control" + (@order.errors.include?(:shipping_zip) ? " field-error" : ""), required: true, data: { "checkout-form-target": "field" } %>
               <% if @order.errors.include?(:shipping_zip) %>
                 <p class="field-error-text"><%= @order.errors[:shipping_zip].join(", ") %></p>
               <% end %>
@@ -66,7 +58,7 @@
 
           <div class="form-group">
             <%= form.label :shipping_country, "Country" %>
-            <%= form.text_field :shipping_country, class: "form-control" + (@order.errors.include?(:shipping_country) ? " field-error" : ""), placeholder: "United States", required: true, data: { "checkout-form-target": "field" } %>
+            <%= form.text_field :shipping_country, class: "form-control" + (@order.errors.include?(:shipping_country) ? " field-error" : ""), required: true, data: { "checkout-form-target": "field" } %>
             <% if @order.errors.include?(:shipping_country) %>
               <p class="field-error-text"><%= @order.errors[:shipping_country].join(", ") %></p>
             <% end %>
@@ -142,18 +134,13 @@
         </div>
 
         <div class="summary-line">
-          <span>Tax (8%):</span>
-          <span><%= format_price(@cart.total_price * 0.08) %></span>
-        </div>
-
-        <div class="summary-line">
           <span>Shipping:</span>
-          <span class="free-shipping">FREE</span>
+          <span class="free-shipping">Rs. 200</span>
         </div>
 
         <div class="summary-line summary-total">
           <span>Total:</span>
-          <span><%= format_price(@cart.total_price * 1.08) %></span>
+          <span><%= format_price(@cart.total_price + 200) %></span>
         </div>
 
         <div class="summary-note">
@@ -195,7 +182,6 @@
   }
 
   .form-section {
-    margin-bottom: 30px;
     padding-bottom: 30px;
     border-bottom: 1px solid #f0f0f0;
     border: none;
@@ -263,7 +249,7 @@
 
   .form-row {
     display: grid;
-    grid-template-columns: 1fr 100px 120px;
+    grid-template-columns: 1fr 100px;
     gap: 20px;
   }
 
@@ -715,7 +701,6 @@
             'order_phone',
             'order_shipping_address',
             'order_shipping_city',
-            'order_shipping_state',
             'order_shipping_zip',
             'order_shipping_country'
           ];
@@ -780,7 +765,6 @@
                     address: {
                       line1: document.querySelector('#order_shipping_address').value,
                       city: document.querySelector('#order_shipping_city').value,
-                      state: document.querySelector('#order_shipping_state').value,
                       postal_code: document.querySelector('#order_shipping_zip').value,
                       country: 'US'
                     }
