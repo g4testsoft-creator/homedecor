@@ -70,6 +70,24 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # Configure Action Mailer for AWS SES
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: ENV["AWS_SES_SMTP_ENDPOINT"],
+    port: 587,
+    authentication: :login,
+    user_name: ENV["AWS_SES_SMTP_USERNAME"],
+    password: ENV["AWS_SES_SMTP_PASSWORD"],
+    enable_starttls_auto: true,
+    enable_starttls: true,
+    openssl_verify_mode: "peer"
+  }
+  
+  # Set default FROM email
+  config.action_mailer.default_options = {
+    from: ENV["MAILER_FROM_EMAIL"]
+  }
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
