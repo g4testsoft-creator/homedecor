@@ -28,6 +28,8 @@ gem "stimulus-rails"
 gem "jbuilder"
 gem 'redis', '~> 5.0'
 gem 'kaminari'
+gem 'meta-tags'
+gem 'sitemap_generator'
 
 
 # Use Redis adapter to run Action Cable in production

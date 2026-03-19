@@ -25,8 +25,8 @@
 
 <p style="margin-top: 20px;">
   <strong>Subtotal:</strong> <%= @order.subtotal %><br>
-  <strong>Tax (8%):</strong> <%= @order.tax %><br>
-  <strong>Total:</strong> <%= @order.total %>
+  <strong>Shipping:</strong> Rs. 200<br>
+  <strong>Total:</strong> <%= @order.subtotal + 200 %>
 </p>
 
 <h3>Shipping Address</h3>
