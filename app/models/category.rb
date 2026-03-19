@@ -30,6 +30,10 @@ class Category < ApplicationRecord
       end
     end
   end
+
+  def to_param
+    slug
+  end
   
   private
   

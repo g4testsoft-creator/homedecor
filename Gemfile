@@ -29,6 +29,7 @@ gem "jbuilder"
 gem 'redis', '~> 5.0'
 gem 'kaminari'
 gem 'meta-tags'
+gem 'canonical-rails'
 gem 'sitemap_generator'
 
 
