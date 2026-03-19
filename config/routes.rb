@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  resources :products, only: [:index, :show] do
+  resources :products, only: [:index, :show], param: :slug do
     collection do
       get :search
     end
@@ -36,7 +36,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :products, only: [:index, :show]
+      resources :products, only: [:index, :show], param: :slug
     end
   end
 end

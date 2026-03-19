@@ -5,9 +5,12 @@ class Product < ApplicationRecord
   has_many_attached :images
   
   validates :name, presence: true
+  validates :slug, presence: true, uniqueness: true
   validates :quantity, numericality: { greater_than_or_equal_to: 0 }
   validates :price, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :compare_at_price, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+
+  before_validation :generate_slug, on: :create
 
   # Scopes
   scope :newest, -> { order(created_at: :desc).limit(10) }
@@ -104,5 +107,26 @@ class Product < ApplicationRecord
 
   def has_features?
     features.present? && features.keys.any?
+  end
+
+  def to_param
+    slug
+  end
+
+  private
+
+  def generate_slug
+    return if slug.present?
+    base = name.to_s.parameterize
+    base = "product" if base.blank?
+
+    candidate = base
+    i = 2
+    while self.class.exists?(slug: candidate)
+      candidate = "#{base}-#{i}"
+      i += 1
+    end
+
+    self.slug = candidate
   end
 end

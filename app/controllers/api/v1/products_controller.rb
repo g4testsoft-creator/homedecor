@@ -13,7 +13,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
   end
 
   def show
-    @product = Product.find(params[:id])
+    @product = Product.find_by!(slug: params[:slug])
     product_data = {
       id: @product.id,
       name: @product.name,
