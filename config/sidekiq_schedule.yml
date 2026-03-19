@@ -1,0 +1,7 @@
+# config/sidekiq_scheduler.yml
+refresh_sitemap_job:
+  # Run every day at 2:00 AM
+  cron: "0 2 * * *"
+  class: "SitemapRefreshJob"
+  queue: default
+  description: "Refreshes the sitemap XML file"

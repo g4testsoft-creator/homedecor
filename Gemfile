@@ -31,6 +31,8 @@ gem 'kaminari'
 gem 'meta-tags'
 gem 'canonical-rails'
 gem 'sitemap_generator'
+gem 'sidekiq'
+gem 'sidekiq-scheduler'
 
 
 # Use Redis adapter to run Action Cable in production

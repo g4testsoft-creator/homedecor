@@ -49,6 +49,24 @@ services:
     tty: true
     restart: unless-stopped
 
+  sidekiq:
+    build: .
+    container_name: homedecor_sidekiq
+    command: bundle exec sidekiq
+    volumes:
+      - storage_data:/homedecor/storage
+    environment:
+      RAILS_ENV: production
+      DATABASE_URL: postgresql://postgres:cybernest@postgres:5432/homedecor_production
+      REDIS_URL: redis://redis:6379/1
+      SECRET_KEY_BASE: a637e094e7b09eae1caf60f4a1586cb040a1ed63d4404db3897adbbae6bb497e02a7388c680f5ba6260a380aa14278a9936311fac337761eb1a6a63020b38508
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   storage_data:
