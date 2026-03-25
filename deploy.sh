@@ -70,6 +70,9 @@ docker compose run --rm web bundle exec rails db:migrate
 echo "🚀 Starting web service..."
 docker compose up -d web
 
+echo "⚙️ Starting Sidekiq worker..."
+docker compose up -d sidekiq
+
 echo "📋 Checking container status..."
 docker compose ps
 

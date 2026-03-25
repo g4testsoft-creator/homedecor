@@ -108,7 +108,7 @@ export default class extends Controller {
     }
     
     const html = products.map((product, index) => `
-      <a href="/products/${product.id}" class="search-dropdown-item" data-index="${index}">
+      <a href="/products/${product.slug}" class="search-dropdown-item" data-index="${index}">
         <h4>${this.escapeHtml(product.name)}</h4>
         ${product.price ? `<p>$${product.price}</p>` : ''}
       </a>

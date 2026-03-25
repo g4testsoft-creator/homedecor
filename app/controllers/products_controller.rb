@@ -13,7 +13,7 @@ class ProductsController < ApplicationController
                 end
 
     respond_to do |format|
-      format.json { render json: @products.as_json(only: [:id, :name, :price]) }
+      format.json { render json: @products.as_json(only: [:slug, :name, :price]) }
       format.html { redirect_to search_products_path(q: params[:q]) }
     end
   end
