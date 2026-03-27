@@ -71,9 +71,9 @@
           
           <div class="payment-methods">
             <!-- Credit Card Option -->
-            <div class="payment-option-group">
+            <div class="payment-option-group" style="display: none;">
               <label class="payment-option-label">
-                <%= radio_button_tag :payment_method, 'card', true, { class: "payment-radio" } %>
+                <%= radio_button_tag :payment_method, 'card', false, { class: "payment-radio" } %>
                 <span class="payment-option-text">
                   <strong>Credit/Debit Card</strong>
                   <span class="payment-option-cards">Visa, Mastercard, Amex</span>
@@ -89,7 +89,7 @@
             <!-- Cash on Delivery Option -->
             <div class="payment-option-group">
               <label class="payment-option-label">
-                <%= radio_button_tag :payment_method, 'cash', false, { class: "payment-radio" } %>
+                <%= radio_button_tag :payment_method, 'cash', true, { class: "payment-radio" } %>
                 <span class="payment-option-text">
                   <strong>Cash on Delivery</strong>
                   <span class="payment-option-desc">Pay when your order arrives</span>
@@ -102,7 +102,7 @@
         <div class="checkout-actions">
           <input type="hidden" id="payment-intent-id" name="payment_intent_id" value="">
           <%= form.submit "Place Order", class: "btn btn-primary btn-lg", id: "place-order-btn", disabled: false, data: { "checkout-form-target": "submitBtn" } %>
-          <%= link_to "Back to Cart", cart_path, class: "btn btn-secondary" %>
+          <%= link_to "Back to Cart", cart_path, class: "btn btn-secondary mb" %>
         </div>
       <% end %>
     </div>
@@ -182,7 +182,6 @@
   }
 
   .form-section {
-    padding-bottom: 30px;
     border-bottom: 1px solid #f0f0f0;
     border: none;
   }
@@ -512,6 +511,9 @@
 
   /* Responsive Design */
   @media (max-width: 768px) {
+    .mb {
+      width: 85% !important;
+    }
     .checkout-content {
       grid-template-columns: 1fr;
       gap: 20px;
