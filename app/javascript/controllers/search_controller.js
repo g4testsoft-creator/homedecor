@@ -107,12 +107,15 @@ export default class extends Controller {
       return
     }
     
-    const html = products.map((product, index) => `
+    const html = products.map((product, index) => {
+      const priceLine = this.formatPricePkr(product.price)
+      return `
       <a href="/products/${product.slug}" class="search-dropdown-item" data-index="${index}">
         <h4>${this.escapeHtml(product.name)}</h4>
-        ${product.price ? `<p>$${product.price}</p>` : ''}
+        ${priceLine ? `<p>${priceLine}</p>` : ""}
       </a>
-    `).join("")
+    `
+    }).join("")
     
     dropdown.innerHTML = html
     dropdown.classList.add("show")
@@ -204,5 +207,14 @@ export default class extends Controller {
     const div = document.createElement("div")
     div.textContent = text
     return div.innerHTML
+  }
+
+  /** Matches ApplicationHelper#format_price: Rs. N with thousands separators, no decimals */
+  formatPricePkr(amount) {
+    if (amount == null || amount === "") return ""
+    const n = Number(amount)
+    if (Number.isNaN(n)) return ""
+    const rounded = Math.round(n)
+    return `Rs. ${rounded.toLocaleString("en-US")}`
   }
 }

@@ -37,12 +37,9 @@
         display: block;
       }
 
-      /* Mobile search - below header */
+      /* Legacy: mobile search was a second row; search now lives in nav row (same as desktop) */
       .nav-search-mobile {
-        width: 98%;
-        padding: 0 3px;
-        position: relative;
-        display: none;
+        display: none !important;
       }
 
       .header-search-form {
@@ -128,14 +125,22 @@
       }
 
       .nav-logo {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
         text-decoration: none;
+        line-height: 0;
       }
 
       .nav-logo:hover {
-        color: #34495e;
+        opacity: 0.92;
+      }
+
+      .nav-logo-img {
+        height: 44px;
+        width: auto;
+        display: block;
+        object-fit: contain;
       }
 
       .nav-links {
@@ -149,7 +154,6 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        padding: 8px 12px;
         text-decoration: none;
         color: #333;
         font-size: 0.95rem;
@@ -343,23 +347,6 @@
         background: #f8f9fa;
         border-bottom: 1px solid #e9ecef;
         padding: 0;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: thin;
-        scrollbar-color: #cbd5e0 #f8f9fa;
-      }
-
-      .categories-nav::-webkit-scrollbar {
-        height: 4px;
-      }
-
-      .categories-nav::-webkit-scrollbar-track {
-        background: #f8f9fa;
-      }
-
-      .categories-nav::-webkit-scrollbar-thumb {
-        background-color: #cbd5e0;
-        border-radius: 20px;
       }
 
       .categories-container {
@@ -368,8 +355,38 @@
         padding: 0 20px;
         display: flex;
         align-items: center;
+        gap: 12px;
+      }
+
+      .categories-hamburger {
+        flex-shrink: 0;
+        align-self: center;
+      }
+
+      .categories-links {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
         gap: 24px;
         white-space: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e0 #f8f9fa;
+      }
+
+      .categories-links::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      .categories-links::-webkit-scrollbar-track {
+        background: #f8f9fa;
+      }
+
+      .categories-links::-webkit-scrollbar-thumb {
+        background-color: #cbd5e0;
+        border-radius: 20px;
       }
 
       .category-link {
@@ -403,7 +420,6 @@
         font-weight: 600;
         border-bottom: 2px solid transparent;
         transition: all 0.2s ease;
-        margin-right: 16px;
       }
 
       .all-products-link:hover {
@@ -499,10 +515,6 @@
         .nav-search-desktop {
           display: block;
         }
-
-        .nav-search-mobile {
-          display: none;
-        }
       }
 
       /* Mobile responsive */
@@ -511,8 +523,15 @@
           margin-left: 0;
         }
 
+        .nav-logo-img {
+          height: 36px;
+        }
+
         .nav-container {
-          padding: 12px 16px;
+          padding: 10px 16px;
+          flex-wrap: nowrap;
+          gap: 10px;
+          align-items: center;
         }
 
         .hamburger-menu {
@@ -520,31 +539,29 @@
         }
 
         .nav-search-desktop {
-          display: none;
+          display: block;
+          flex: 1;
+          min-width: 0;
+          max-width: none;
         }
 
-        .nav-search-mobile {
-          display: block;
-          width: 92%;
-          padding: 0 19px;
+        .nav-search-desktop .header-search-input {
+          padding: 7px 10px;
+          font-size: 0.85rem;
         }
 
         .nav-links {
           gap: 8px;
+          flex-shrink: 0;
         }
 
         .nav-link {
-          padding: 6px 8px;
+          padding: 6px 2px;
           font-size: 0.85rem;
         }
 
-        .cart-link {
-          padding: 6px 8px;
-        }
-
         .categories-container {
-          padding: 0 16px;
-          gap: 16px;
+          padding: 0;
         }
 
         .category-link {
@@ -555,11 +572,6 @@
         .all-products-link {
           padding: 10px 0;
           font-size: 0.85rem;
-        }
-
-        .categories-nav {
-          display: none;
-          margin-left: 0;
         }
 
         .sidebar {
@@ -950,19 +962,11 @@
   <body data-controller="search toast categories sidebar">
     <nav class="main-nav">
       <div class="nav-container">
-        <!-- Hamburger Menu Button -->
-        <button class="hamburger-menu" 
-                data-sidebar-target="toggle"
-                data-action="click->sidebar#toggle"
-                aria-label="Toggle menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        <%= link_to "Home Decor", root_path, class: "nav-logo" %>
+        <%= link_to root_path, class: "nav-logo", title: "Home Decor" do %>
+          <%= image_tag "/logo.png", alt: "Home Decor", class: "nav-logo-img" %>
+        <% end %>
         
-        <!-- Desktop Search - inside header -->
+        <!-- Search (same row as cart on all screen sizes) -->
         <div class="nav-search-desktop" data-search-target="desktopContainer">
           <div class="header-search-form">
             <input type="text" 
@@ -986,21 +990,6 @@
           <% else %>
             <%= link_to "Sign in", new_user_session_path, class: "nav-link" %>
           <% end %>
-        </div>
-      </div>
-
-      <!-- Mobile Search - below header -->
-      <div class="nav-search-mobile" data-search-target="mobileContainer">
-        <div class="header-search-form">
-          <input type="text" 
-                 placeholder="Search products..." 
-                 class="header-search-input"
-                 data-search-target="mobileInput"
-                 data-action="input->search#mobileSearch keydown.enter->search#mobileSubmit">
-        </div>
-        
-        <div class="search-dropdown" data-search-target="mobileDropdown">
-          <!-- Search results will appear here -->
         </div>
       </div>
     </nav>
@@ -1031,12 +1020,23 @@
     <!-- Categories Navigation Bar -->
     <div class="categories-nav">
       <div class="categories-container">
-        <%= link_to "All Products", root_path, class: "all-products-link #{'active' if current_page?(products_path)}" %>
-        
-        <% Category.all.each do |category| %>
-          <%= link_to category.name, category_path(category.slug), 
-              class: "category-link #{'active' if current_page?(category_path(category))}" %>
-        <% end %>
+        <button type="button"
+                class="hamburger-menu categories-hamburger"
+                data-sidebar-target="toggle"
+                data-action="click->sidebar#toggle"
+                aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="categories-links">
+          <%= link_to "All Products", root_path, class: "all-products-link #{'active' if current_page?(products_path)}" %>
+          
+          <% Category.all.each do |category| %>
+            <%= link_to category.name, category_path(category.slug), 
+                class: "category-link #{'active' if current_page?(category_path(category))}" %>
+          <% end %>
+        </div>
       </div>
     </div>
 
