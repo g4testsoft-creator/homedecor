@@ -2,14 +2,10 @@
   <h1 class="cart-title">Shopping Cart</h1>
 
   <% if @cart_items.any? %>
-    <div id="cart_items_list" class="cart-items-section" data-controller="cart">
-      <%= render "cart_items_list", cart_items: @cart_items %>
-    </div>
+    <%= render "cart_items_list", cart_items: @cart_items %>
 
     <div class="cart-summary">
-      <div id="cart_total" class="cart-total-section">
-        <%= render "cart_total", cart_items: @cart_items %>
-      </div>
+      <%= render "cart_total", cart_items: @cart_items %>
 
       <div class="cart-actions">
         <%= button_to "Clear Cart", clear_cart_path, method: :post, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>

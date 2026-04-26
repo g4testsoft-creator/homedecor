@@ -7,8 +7,8 @@
 <div class="decor-items-grid">
   <% @products.each do |item| %>
     <div class="decor-card-wrapper">
-      <%= link_to product_path(item), class: "decor-card-link" do %>
-        <div class="decor-card">
+      <div class="decor-card">
+        <%= link_to product_path(item), class: "decor-card-link" do %>
           <% if item.images.attached? %>
             <div class="card-image">
               <%= image_tag item.images.first, alt: item.name, class: "card-img" %>
@@ -18,24 +18,18 @@
               <img src="https://via.placeholder.com/400x300?text=No+Image" alt="<%= item.name %>" class="card-img">
             </div>
           <% end %>
-          
+
           <% unless item.in_stock? %>
             <div class="out-of-stock-badge">Out of Stock</div>
           <% end %>
-          
+
           <div class="card-content">
             <h3 class="card-title"><%= item.name %></h3>
-            
+
             <% if item.description.present? %>
               <p class="card-description"><%= truncate(item.description, length: 100) %></p>
             <% end %>
-            
-            <% if item.price.present? %>
-              <div class="card-price">
-                <strong><%= format_price(item.price) %></strong>
-              </div>
-            <% end %>
-            
+
             <% if item.respond_to?(:average_rating) && item.average_rating > 0 %>
               <div class="card-rating">
                 <span class="stars">
@@ -46,16 +40,17 @@
               </div>
             <% end %>
           </div>
+        <% end %>
+
+        <div class="card-price-row">
+          <% if item.price.present? %>
+            <div class="card-price">
+              <strong><%= format_price(item.price) %></strong>
+            </div>
+          <% end %>
+          <%= render "shared/cart_action", product: item, style: :compact %>
         </div>
-      <% end %>
-      
-      <form class="card-add-to-cart" action="<%= add_item_cart_path %>" method="post" data-controller="add-to-cart" data-product-name="<%= item.name %>">
-        <input type="hidden" name="product_id" value="<%= item.id %>">
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-        <input type="hidden" name="quantity" value="1">
-        <button type="submit" class="card-add-btn">Add to Cart</button>
-      </form>
-      
+      </div>
     </div>
   <% end %>
 </div>
@@ -121,34 +116,6 @@
     flex: 1;
   }
 
-  /* Card Add to Cart Form */
-  .card-add-to-cart {
-    background: white;
-    border-top: 1px solid #f0f0f0;
-  }
-
-  .card-add-btn {
-    width: 100%;
-    padding: 10px 12px;
-    background: #2c3e50;
-    color: white;
-    border: none;
-    border-radius: 0 0 12px 12px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.05s ease;
-  }
-
-  .card-add-btn:hover {
-    background: #34495e;
-    transform: translateY(-2px);
-  }
-
-  .card-add-btn:active {
-    transform: scale(0.98);
-  }
-  
   /* Card Styles */
   .decor-card {
     background: white;

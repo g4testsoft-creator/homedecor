@@ -1,59 +1,50 @@
-<% cart_items.each do |cart_item| %>
-  <div class="cart-item" id="cart-item-<%= cart_item.id %>">
-    <% if cart_item.product.images.attached? %>
-      <div class="cart-item-image">
-        <%= image_tag cart_item.product.images.first, alt: cart_item.product.name %>
+<div id="cart_items_list" class="cart-items-section">
+  <% cart_items.each do |cart_item| %>
+    <div class="cart-item" id="cart-item-<%= cart_item.product_id %>">
+      <% if cart_item.product.images.attached? %>
+        <div class="cart-item-image">
+          <%= image_tag cart_item.product.images.first, alt: cart_item.product.name %>
+        </div>
+      <% else %>
+        <div class="cart-item-image" style="background: #f0f0f0;"></div>
+      <% end %>
+
+      <div class="cart-item-details">
+        <%= link_to cart_item.product.name, product_path(cart_item.product), class: "cart-item-name" %>
+        <p class="cart-item-price"><%= format_price(cart_item.product.price) %> each</p>
       </div>
-    <% else %>
-      <div class="cart-item-image" style="background: #f0f0f0;"></div>
-    <% end %>
-    <div class="cart-item-details">
-      <%= link_to cart_item.product.name, product_path(cart_item.product), class: "cart-item-name" %>
-      <p class="cart-item-price"><%= format_price(cart_item.product.price) %> each</p>
-    </div>
 
-    <div class="cart-item-controls">
-      <input type="number" 
-             id="quantity_<%= cart_item.id %>"
-             class="quantity-input" 
-             value="<%= cart_item.quantity %>" 
-             min="1"
-             max="999">
-      <button type="button"
-              class="update-quantity-btn"
-              data-product-id="<%= cart_item.product_id %>"
-              onclick="updateQuantity('<%= cart_item.product_id %>', this)">Update</button>
-      <%= button_to "Remove", 
-                    remove_item_cart_path(product_id: cart_item.product_id), 
-                    method: :delete,
-                    class: "remove-btn" %>
-    </div>
+      <div class="cart-item-controls">
+        <div class="cart-action cart-action-compact"
+             data-controller="cart-stepper"
+             data-cart-stepper-product-id-value="<%= cart_item.product_id %>"
+             data-cart-stepper-quantity-value="<%= cart_item.quantity %>"
+             data-cart-stepper-update-url-value="<%= update_quantity_cart_path %>">
+          <div class="cart-stepper">
+            <button type="button"
+                    class="cart-stepper-btn cart-stepper-decrement"
+                    data-cart-stepper-target="decrementButton"
+                    data-action="click->cart-stepper#decrement"
+                    aria-label="Decrease quantity">−</button>
+            <span class="cart-stepper-value" data-cart-stepper-target="quantity"><%= cart_item.quantity %></span>
+            <button type="button"
+                    class="cart-stepper-btn cart-stepper-increment"
+                    data-cart-stepper-target="incrementButton"
+                    data-action="click->cart-stepper#increment"
+                    aria-label="Increase quantity">+</button>
+          </div>
+        </div>
 
-    <div class="cart-item-total">
-      <%= format_price(cart_item.total_price) %>
-    </div>
-  </div>
-<% end %>
+        <%= button_to "Remove",
+                      remove_item_cart_path(product_id: cart_item.product_id),
+                      method: :delete,
+                      class: "remove-btn",
+                      form: { data: { turbo_confirm: "Remove this item from the cart?" } } %>
+      </div>
 
-<script>
-  function updateQuantity(productId, button) {
-    const quantityInput = document.getElementById(`quantity_${productId}`);
-    const quantity = quantityInput.value;
-    
-    const formData = new FormData();
-    formData.append('quantity', quantity);
-    
-    fetch(`<%= update_quantity_cart_path %>?product_id=${productId}`, {
-      method: 'PATCH',
-      headers: {
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-      },
-      body: formData
-    })
-    .then(response => response.text())
-    .then(html => {
-      // The Turbo stream response will handle the update
-    })
-    .catch(error => console.error('Error:', error));
-  }
-</script>
+      <div class="cart-item-total">
+        <%= format_price(cart_item.total_price) %>
+      </div>
+    </div>
+  <% end %>
+</div>

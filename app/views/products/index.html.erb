@@ -18,8 +18,8 @@
 <div class="decor-items-grid">
   <% @products.each do |item| %>
     <div class="product-card-wrapper">
-      <%= link_to product_path(item), class: "decor-card-link" do %>
-        <div class="decor-card">
+      <div class="decor-card">
+        <%= link_to product_path(item), class: "decor-card-link" do %>
           <% if item.images.attached? %>
             <div class="card-image">
               <%= image_tag item.images.first, alt: item.name, class: "card-img" %>
@@ -29,29 +29,29 @@
               <img src="https://via.placeholder.com/400x300?text=No+Image" alt="<%= item.name %>" class="card-img">
             </div>
           <% end %>
-          
+
+          <% unless item.in_stock? %>
+            <div class="out-of-stock-badge">Out of Stock</div>
+          <% end %>
+
           <div class="card-content">
             <h3 class="card-title"><%= item.name %></h3>
-            
+
             <% if item.description.present? %>
               <p class="card-description"><%= truncate(item.description, length: 100) %></p>
             <% end %>
-            
-            <% if item.price.present? %>
-              <div class="card-price">
-                <strong><%= format_price(item.price) %></strong>
-              </div>
-            <% end %>
           </div>
-        </div>
-      <% end %>
+        <% end %>
 
-      <form class="card-add-to-cart" action="<%= add_item_cart_path %>" method="post" data-controller="add-to-cart" data-product-name="<%= item.name %>">
-        <input type="hidden" name="product_id" value="<%= item.id %>">
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-        <input type="hidden" name="quantity" value="1">
-        <button type="submit" class="card-add-btn">Add to Cart</button>
-      </form>
+        <div class="card-price-row">
+          <% if item.price.present? %>
+            <div class="card-price">
+              <strong><%= format_price(item.price) %></strong>
+            </div>
+          <% end %>
+          <%= render "shared/cart_action", product: item, style: :compact %>
+        </div>
+      </div>
     </div>
   <% end %>
 </div>
@@ -106,19 +106,22 @@
     padding: 20px;
   }
 
-  .card-add-btn {
-    width: 100%;
-    padding: 10px 12px;
-    background: #2c3e50;
+  .out-of-stock-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(198, 40, 40, 0.95);
     color: white;
-    border: none;
-    border-radius: 0 0 12px 12px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.05s ease;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
+    z-index: 10;
   }
-    
+
   .heading{
     padding: 0 24px
   }
@@ -126,6 +129,14 @@
   .decor-card-link {
     text-decoration: none;
     color: inherit;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .product-card-wrapper {
+    height: 100%;
+    display: flex;
   }
 
   .decor-card {
@@ -134,6 +145,10 @@
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
   .decor-card:hover {
@@ -145,6 +160,7 @@
     width: 100%;
     height: 284px;
     overflow: hidden;
+    position: relative;
   }
 
   .card-img {
@@ -160,6 +176,9 @@
 
   .card-content {
     padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   .card-title {

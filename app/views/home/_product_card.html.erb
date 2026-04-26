@@ -1,6 +1,6 @@
 <div class="product-card-wrapper">
-  <%= link_to product_path(item), class: "decor-card-link" do %>
-    <div class="decor-card">
+  <div class="decor-card">
+    <%= link_to product_path(item), class: "decor-card-link" do %>
       <% if item.images.attached? && item.images.first.present? %>
         <div class="card-image">
           <%= image_tag item.images.first, alt: item.name, class: "card-img" %>
@@ -10,43 +10,51 @@
           <img src="https://via.placeholder.com/400x300?text=No+Image" alt="<%= item.name %>" class="card-img">
         </div>
       <% end %>
-      
-      <!-- Out of Stock Badge -->
+
       <% unless item.in_stock? %>
         <div class="out-of-stock-badge">Out of Stock</div>
       <% end %>
-      
+
       <div class="card-content">
         <h3 class="card-title"><%= item.name %></h3>
-        
+
         <% if item.description.present? %>
           <p class="card-description"><%= truncate(item.description, length: 80) %></p>
         <% end %>
-        
-        <% if item.price.present? %>
-          <div class="card-price">
-            <strong>Rs. <%= item.price.to_i %></strong>
-          </div>
-        <% end %>
       </div>
-    </div>
-  <% end %>
+    <% end %>
 
-  <form class="card-add-to-cart" action="<%= add_item_cart_path %>" method="post" data-controller="add-to-cart" data-product-name="<%= item.name %>">
-    <input type="hidden" name="product_id" value="<%= item.id %>">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-    <input type="hidden" name="quantity" value="1">
-    <button type="submit" class="card-add-btn" <%= 'disabled' unless item.in_stock? %>>
-      <%= item.in_stock? ? 'Add to Cart' : 'Out of Stock' %>
-    </button>
-  </form>
+    <div class="card-price-row">
+      <% if item.price.present? %>
+        <div class="card-price">
+          <strong>Rs. <%= item.price.to_i %></strong>
+        </div>
+      <% end %>
+      <%= render "shared/cart_action", product: item, style: :compact %>
+    </div>
+  </div>
 </div>
 
 <style>
+  .product-card-wrapper {
+    height: 100%;
+    display: flex;
+  }
+
   .decor-card {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
   }
-  
+
+  .decor-card-link {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
   .card-image {
     position: relative;
   }
@@ -56,27 +64,7 @@
       height: 311px;
     }
   }
-  
-  .card-add-btn {
-    width: 100%;
-    padding: 10px 12px;
-    background: #2c3e50;
-    color: white;
-    border: none;
-    border-radius: 0 0 12px 12px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.05s ease;
-  }
-  
-  .card-add-btn:disabled {
-    background: #cbd5e1;
-    color: #94a3b8;
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-  
+
   .out-of-stock-badge {
     position: absolute;
     top: 12px;

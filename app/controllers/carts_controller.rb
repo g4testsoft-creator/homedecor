@@ -26,7 +26,10 @@ class CartsController < ApplicationController
           success: true,
           message: "#{product.name} added to cart",
           quantity: quantity,
-          product_name: product.name
+          product_name: product.name,
+          product_id: product.id,
+          product_quantity_in_cart: product_quantity_in_cart(product),
+          cart_total_items: cart_total_items
         }
       end
       format.turbo_stream do
@@ -76,6 +79,14 @@ class CartsController < ApplicationController
     end
     
     respond_to do |format|
+      format.json do
+        render json: {
+          success: true,
+          product_id: product.id,
+          product_quantity_in_cart: product_quantity_in_cart(product),
+          cart_total_items: cart_total_items
+        }
+      end
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.replace("cart_items_list", partial: "cart_items_list", locals: { cart_items: cart_items }),
@@ -115,6 +126,22 @@ class CartsController < ApplicationController
   def set_cart
     if user_signed_in?
       @cart = current_user.cart || current_user.create_cart
+    end
+  end
+
+  def product_quantity_in_cart(product)
+    if user_signed_in?
+      @cart&.cart_items&.find_by(product_id: product.id)&.quantity.to_i
+    else
+      session[:cart_items]&.dig(product.id.to_s).to_i
+    end
+  end
+
+  def cart_total_items
+    if user_signed_in?
+      @cart&.total_items.to_i
+    else
+      (session[:cart_items] || {}).values.sum(&:to_i)
     end
   end
 

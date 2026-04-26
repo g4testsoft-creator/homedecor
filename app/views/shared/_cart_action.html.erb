@@ -1,0 +1,48 @@
+<%#
+  Renders an Add-to-Cart control for a product.
+  When the product is not in the cart, an "Add to Cart" pill button is shown.
+  Once at least one unit is in the cart, the button is swapped for a quantity
+  stepper (- N +). Both states share the same Stimulus controller instance.
+
+  Locals:
+    product - the Product instance
+    style   - :compact (default, used inside product cards)
+              :large   (used on product show page)
+%>
+<% style = local_assigns.fetch(:style, :compact) %>
+<% current_qty = cart_quantity_for(product) %>
+<% in_stock = product.in_stock? %>
+
+<div class="cart-action cart-action-<%= style %>"
+     data-controller="add-to-cart"
+     data-add-to-cart-product-id-value="<%= product.id %>"
+     data-add-to-cart-product-name-value="<%= product.name %>"
+     data-add-to-cart-quantity-value="<%= current_qty %>"
+     data-add-to-cart-add-url-value="<%= add_item_cart_path %>"
+     data-add-to-cart-update-url-value="<%= update_quantity_cart_path %>">
+
+  <button type="button"
+          class="cart-add-btn"
+          data-add-to-cart-target="addButton"
+          data-action="click->add-to-cart#add"
+          <%= 'hidden' if current_qty.positive? %>
+          <% unless in_stock %>disabled data-permanently-disabled<% end %>>
+    <%= in_stock ? 'Add to Cart' : 'Out of Stock' %>
+  </button>
+
+  <div class="cart-stepper"
+       data-add-to-cart-target="stepper"
+       <%= 'hidden' if current_qty.zero? %>>
+    <button type="button"
+            class="cart-stepper-btn cart-stepper-decrement"
+            data-add-to-cart-target="decrementButton"
+            data-action="click->add-to-cart#decrement"
+            aria-label="Decrease quantity">−</button>
+    <span class="cart-stepper-value" data-add-to-cart-target="quantity"><%= [current_qty, 1].max %></span>
+    <button type="button"
+            class="cart-stepper-btn cart-stepper-increment"
+            data-add-to-cart-target="incrementButton"
+            data-action="click->add-to-cart#increment"
+            aria-label="Increase quantity">+</button>
+  </div>
+</div>

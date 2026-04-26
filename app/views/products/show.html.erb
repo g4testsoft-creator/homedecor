@@ -105,29 +105,7 @@
 
       <!-- Add to Cart Section -->
       <div class="decor-show-actions">
-        <form id="add-to-cart-form" action="<%= add_item_cart_path %>" method="post" class="add-to-cart-form" data-controller="add-to-cart" data-product-name="<%= @product.name %>">
-          <input type="hidden" name="product_id" value="<%= @product.id %>">
-          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-          
-          <div class="quantity-selector">
-            <label for="quantity">Quantity:</label>
-            <input type="number" 
-                   id="quantity" 
-                   name="quantity" 
-                   value="1" 
-                   min="1" 
-                   max="<%= @product.quantity %>" 
-                   class="quantity-input-field"
-                   <%= 'disabled' unless @product.in_stock? %>>
-          </div>
-          
-          <button type="submit" 
-                  class="btn-primary btn-add-to-cart" 
-                  <%= 'disabled' unless @product.in_stock? %>>
-            <%= @product.in_stock? ? 'Add to Cart' : 'Out of Stock' %>
-          </button>
-        </form>
-        
+        <%= render "shared/cart_action", product: @product, style: :large %>
         <%= link_to "Back to Home", root_path, class: "btn-secondary" %>
       </div>
 

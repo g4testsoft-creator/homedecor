@@ -1,4 +1,4 @@
-<div id="cart_total">
+<div id="cart_total" class="cart-total-section">
   <% 
     subtotal = if defined?(cart_items) && cart_items.present?
       cart_items.sum(&:total_price)
